@@ -1,0 +1,15 @@
+{
+  "name": "scarlet-buscas-site",
+  "version": "1.0.0",
+  "description": "Static marketing site for Scarlet Buscas",
+  "scripts": {
+    "start": "npx serve . -l 5000",
+    "minify": "npx csso styles.css -o styles.min.css && npx terser script.js -o script.min.js",
+    "deploy": "gh-pages -d ."
+  },
+  "devDependencies": {
+    "csso": "^6.0.0",
+    "gh-pages": "^4.0.0",
+    "terser": "^5.0.0"
+  }
+}

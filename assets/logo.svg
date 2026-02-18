@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="48" viewBox="0 0 180 48" role="img" aria-label="Scarlet Buscas logo">
+  <defs>
+    <linearGradient id="r" x1="0" x2="1">
+      <stop offset="0" stop-color="#ef4444" />
+      <stop offset="1" stop-color="#b91c1c" />
+    </linearGradient>
+  </defs>
+  <rect width="180" height="48" rx="8" fill="transparent" />
+  <g transform="translate(12,10)" font-family="Segoe UI, Roboto, Arial" font-weight="800">
+    <text x="0" y="22" font-size="20" fill="url(#r)">Scarlet</text>
+  </g>
+  <g transform="translate(102,14)" font-family="Segoe UI, Roboto, Arial">
+    <text x="0" y="18" font-size="14" fill="#ffdede">Buscas</text>
+  </g>
+</svg>
