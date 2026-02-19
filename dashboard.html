@@ -192,5 +192,17 @@
   </div>
 
   <script src="dashboard.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    auth.requireAuth();
+    // populate user name
+    const nameEl = document.getElementById('userName');
+    if (nameEl) nameEl.textContent = auth.currentUser() || nameEl.textContent;
+    // wire logout buttons
+    const btn = document.getElementById('btnLogout');
+    const btnMobile = document.getElementById('btnLogoutMobile');
+    if (btn) btn.addEventListener('click', () => { auth.logout(); });
+    if (btnMobile) btnMobile.addEventListener('click', () => { auth.logout(); });
+  </script>
 </body>
 </html>

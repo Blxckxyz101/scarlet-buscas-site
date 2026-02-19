@@ -317,5 +317,11 @@
     <!-- <script async defer data-domain="plausible.example.com" src="https://plausible.io/js/plausible.js"></script> -->
 
     <script src="script.js"></script>
+    <script src="auth.js"></script>
+    <script>
+      auth.requireAuth();
+      const sbEl = document.getElementById('sb-username');
+      if (sbEl) sbEl.textContent = auth.currentUser() || '';
+    </script>
   </body>
 </html>

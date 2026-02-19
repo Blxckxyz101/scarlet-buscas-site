@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cadastro — Scarlet Buscas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="auth-container">
+    <section class="auth-card">
+      <h1>Criar Conta</h1>
+      <form id="signupForm">
+        <label>Usuário
+          <input id="username" name="username" required>
+        </label>
+        <label>Email (opcional)
+          <input id="email" name="email" type="email">
+        </label>
+        <label>Senha
+          <input id="password" name="password" type="password" required>
+        </label>
+        <label>Confirmar Senha
+          <input id="password2" name="password2" type="password" required>
+        </label>
+        <button type="submit" class="btn-primary">Criar conta</button>
+      </form>
+      <p>Já tem conta? <a href="login.html">Entrar</a></p>
+    </section>
+  </main>
+  <script src="auth.js"></script>
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const u = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const p = document.getElementById('password').value;
+      const p2 = document.getElementById('password2').value;
+      if (p !== p2) return alert('Senhas não conferem');
+      try {
+        await auth.registerUser(u, email, p);
+        location.href = 'dashboard.html';
+      } catch (err) {
+        alert(err.message || 'Erro no cadastro');
+      }
+    });
+  </script>
+</body>
+</html>

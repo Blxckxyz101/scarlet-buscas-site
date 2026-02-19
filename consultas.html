@@ -389,6 +389,13 @@
   </footer>
 
   <script src="script.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    auth.requireAuth();
+    const sbEl = document.getElementById('sb-username');
+    if (sbEl) sbEl.textContent = auth.currentUser() || '';
+
+  </script>
   <script>
     // Consultas page specific script
     const filterTabs = document.querySelectorAll('.filter-tab');
