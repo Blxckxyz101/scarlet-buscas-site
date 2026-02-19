@@ -7,3 +7,5 @@ package-lock.json
 .env.local
 dist/
 build/
+.git-credentials
+*git-credentials
