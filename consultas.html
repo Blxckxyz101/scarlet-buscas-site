@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consultas | Scarlet Buscas - Busque dados em tempo real</title>
+  <meta name="description" content="Consulte CPF, CNPJ, placa de veículo, RG, telefone, score de crédito e muito mais com a Scarlet Buscas. Dados atualizados e confiáveis em tempo real.">
+  <meta name="og:title" content="Consultas | Scarlet Buscas">
+  <meta name="og:description" content="Consulte dados de pessoas e empresas. CPF, CNPJ, placa, RG, telefone, email, endereço e mais.">
+  <meta name="og:image" content="assets/logo.svg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Pular para conteúdo principal</a>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <svg width="140" height="24" viewBox="0 0 140 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#b91c1c;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <text x="0" y="18" font-family="Inter" font-size="18" font-weight="700" fill="url(#grad)">Scarlet</text>
+            <text x="70" y="18" font-family="Inter" font-size="18" font-weight="700" fill="#9ca3af">Buscas</text>
+          </svg>
+        </a>
+        <nav class="nav">
+          <a href="index.html#hero">Home</a>
+          <a href="consultas.html" class="active">Consultas</a>
+          <a href="dashboard.html">Painel</a>
+          <a href="index.html#pricing">Preços</a>
+          <a href="index.html#contact">Contato</a>
+        </nav>
+        <button id="darkModeToggle" class="dark-toggle" aria-label="Alternar modo escuro">🌙</button>
+        <button class="nav-toggle" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main id="main-content">
+    <!-- HERO CONSULTAS -->
+    <section class="hero hero-consultas">
+      <div class="container">
+        <div class="hero-content">
+          <h1>Nossas <span class="gradient">Consultas</span></h1>
+          <p>Acesse dados precisos e atualizados de pessoas e empresas. Mais de 20 tipos diferentes de consultas disponíveis.</p>
+          <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Busque por tipo de consulta (ex: CPF, CNPJ)..." class="search-input">
+            <button class="search-btn">🔍</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FILTER TABS -->
+    <section class="filter-section">
+      <div class="container">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all">Todas</button>
+          <button class="filter-tab" data-filter="pessoas">Pessoas</button>
+          <button class="filter-tab" data-filter="empresas">Empresas</button>
+          <button class="filter-tab" data-filter="veiculos">Veículos</button>
+          <button class="filter-tab" data-filter="financeiro">Financeiro</button>
+          <button class="filter-tab" data-filter="contato">Contato</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONSULTAS GRID -->
+    <section class="consultas-section">
+      <div class="container">
+        <div class="consultas-detailed-grid" id="consultasGrid">
+          <!-- CPF -->
+          <div class="consulta-detailed-card" data-category="pessoas">
+            <div class="card-icon">📋</div>
+            <h3>Consulta CPF</h3>
+            <p>Validação e informações de CPF. Verificação de elegibilidade fiscal e status cadastral.</p>
+            <ul class="card-features">
+              <li>✓ Validação instantânea</li>
+              <li>✓ Status cadastral</li>
+              <li>✓ Elegibilidade fiscal</li>
+            </ul>
+            <div class="card-price">R$ 2,90<span>/consulta</span></div>
+            <button class="card-btn">Consultar CPF</button>
+          </div>
+
+          <!-- CNPJ -->
+          <div class="consulta-detailed-card" data-category="empresas">
+            <div class="card-icon">🏢</div>
+            <h3>Consulta CNPJ</h3>
+            <p>Dados completos de empresas. Razão social, status tributário, sócios e inscrições.</p>
+            <ul class="card-features">
+              <li>✓ Razão social</li>
+              <li>✓ Status tributário</li>
+              <li>✓ Informações de sócios</li>
+            </ul>
+            <div class="card-price">R$ 3,90<span>/consulta</span></div>
+            <button class="card-btn">Consultar CNPJ</button>
+          </div>
+
+          <!-- PLACA -->
+          <div class="consulta-detailed-card" data-category="veiculos">
+            <div class="card-icon">🚗</div>
+            <h3>Consulta Placa</h3>
+            <p>Informações de veículos. Marca, modelo, ano, proprietário e histórico.</p>
+            <ul class="card-features">
+              <li>✓ Marca e modelo</li>
+              <li>✓ Dados do proprietário</li>
+              <li>✓ Histórico de multas</li>
+            </ul>
+            <div class="card-price">R$ 4,90<span>/consulta</span></div>
+            <button class="card-btn">Consultar Placa</button>
+          </div>
+
+          <!-- RG -->
+          <div class="consulta-detailed-card" data-category="pessoas">
+            <div class="card-icon">🆔</div>
+            <h3>Consulta RG</h3>
+            <p>Validação de RG. Verificação de autenticidade e status do documento.</p>
+            <ul class="card-features">
+              <li>✓ Validação de RG</li>
+              <li>✓ Status do documento</li>
+              <li>✓ Informações cadastrais</li>
+            </ul>
+            <div class="card-price">R$ 2,50<span>/consulta</span></div>
+            <button class="card-btn">Consultar RG</button>
+          </div>
+
+          <!-- TELEFONE -->
+          <div class="consulta-detailed-card" data-category="contato">
+            <div class="card-icon">📞</div>
+            <h3>Consulta Telefone</h3>
+            <p>Busca reversa de telefone. Identifique o proprietário da linha.</p>
+            <ul class="card-features">
+              <li>✓ Identificação de proprietário</li>
+              <li>✓ Tipo de linha</li>
+              <li>✓ Operadora</li>
+            </ul>
+            <div class="card-price">R$ 1,90<span>/consulta</span></div>
+            <button class="card-btn">Consultar Telefone</button>
+          </div>
+
+          <!-- EMAIL -->
+          <div class="consulta-detailed-card" data-category="contato">
+            <div class="card-icon">✉️</div>
+            <h3>Consulta Email</h3>
+            <p>Verificação de email. Detecção de padrões e informações associadas.</p>
+            <ul class="card-features">
+              <li>✓ Verificação de validade</li>
+              <li>✓ Detecção de padrões</li>
+              <li>✓ Associações encontradas</li>
+            </ul>
+            <div class="card-price">R$ 2,50<span>/consulta</span></div>
+            <button class="card-btn">Consultar Email</button>
+          </div>
+
+          <!-- ENDEREÇO -->
+          <div class="consulta-detailed-card" data-category="pessoas">
+            <div class="card-icon">🏠</div>
+            <h3>Consulta Endereço</h3>
+            <p>Busca de histórico de endereços associados a uma pessoa.</p>
+            <ul class="card-features">
+              <li>✓ Histórico completo</li>
+              <li>✓ Período de residência</li>
+              <li>✓ Informações de vizinhos</li>
+            </ul>
+            <div class="card-price">R$ 3,50<span>/consulta</span></div>
+            <button class="card-btn">Consultar Endereço</button>
+          </div>
+
+          <!-- SCORE CRÉDITO -->
+          <div class="consulta-detailed-card" data-category="financeiro">
+            <div class="card-icon">📊</div>
+            <h3>Score de Crédito</h3>
+            <p>Avaliação de risco de crédito baseada em histórico financeiro.</p>
+            <ul class="card-features">
+              <li>✓ Pontuação 0-1000</li>
+              <li>✓ Análise de risco</li>
+              <li>✓ Recomendações</li>
+            </ul>
+            <div class="card-price">R$ 4,90<span>/consulta</span></div>
+            <button class="card-btn">Consultar Score</button>
+          </div>
+
+          <!-- NOME -->
+          <div class="consulta-detailed-card" data-category="pessoas">
+            <div class="card-icon">👤</div>
+            <h3>Consulta Nome</h3>
+            <p>Busca de CPF e RG pelo nome da pessoa.</p>
+            <ul class="card-features">
+              <li>✓ Busca por nome completo</li>
+              <li>✓ Retorna CPF e RG</li>
+              <li>✓ Data de nascimento</li>
+            </ul>
+            <div class="card-price">R$ 2,50<span>/consulta</span></div>
+            <button class="card-btn">Consultar Nome</button>
+          </div>
+
+          <!-- PROFISSÃO -->
+          <div class="consulta-detailed-card" data-category="pessoas">
+            <div class="card-icon">👨‍💼</div>
+            <h3>Consulta Profissão</h3>
+            <p>Informações de registros profissionais e inscrições em conselhos.</p>
+            <ul class="card-features">
+              <li>✓ Registro profissional</li>
+              <li>✓ Conselho de classe</li>
+              <li>✓ Status ativo/inativo</li>
+            </ul>
+            <div class="card-price">R$ 3,50<span>/consulta</span></div>
+            <button class="card-btn">Consultar Profissão</button>
+          </div>
+
+          <!-- SALDO BANCÁRIO -->
+          <div class="consulta-detailed-card" data-category="financeiro">
+            <div class="card-icon">💰</div>
+            <h3>Saldo Bancário</h3>
+            <p>Consulta de informações bancárias (mediante autorização).</p>
+            <ul class="card-features">
+              <li>✓ Informações de conta</li>
+              <li>✓ Instituições associadas</li>
+              <li>✓ Status de contas</li>
+            </ul>
+            <div class="card-price">R$ 5,90<span>/consulta</span></div>
+            <button class="card-btn">Consultar Saldo</button>
+          </div>
+
+          <!-- ANTECEDENTES -->
+          <div class="consulta-detailed-card" data-category="pessoas">
+            <div class="card-icon">⚖️</div>
+            <h3>Antecedentes</h3>
+            <p>Consulta de histórico criminal e processos judiciais.</p>
+            <ul class="card-features">
+              <li>✓ Antecedentes criminais</li>
+              <li>✓ Processos em andamento</li>
+              <li>✓ Pendências judiciais</li>
+            </ul>
+            <div class="card-price">R$ 6,90<span>/consulta</span></div>
+            <button class="card-btn">Consultar Antecedentes</button>
+          </div>
+
+          <!-- IMÓVEL -->
+          <div class="consulta-detailed-card" data-category="empresas">
+            <div class="card-icon">🏘️</div>
+            <h3>Consulta Imóvel</h3>
+            <p>Informações de imóveis e propriedades registradas.</p>
+            <ul class="card-features">
+              <li>✓ Dados do imóvel</li>
+              <li>✓ Proprietários</li>
+              <li>✓ Histórico de transações</li>
+            </ul>
+            <div class="card-price">R$ 5,50<span>/consulta</span></div>
+            <button class="card-btn">Consultar Imóvel</button>
+          </div>
+
+          <!-- CERTIDÃO NEGATIVA -->
+          <div class="consulta-detailed-card" data-category="financeiro">
+            <div class="card-icon">✅</div>
+            <h3>Certidão Negativa</h3>
+            <p>Comprovação de não existência de débitos e processosativos.</p>
+            <ul class="card-features">
+              <li>✓ Status de débitos</li>
+              <li>✓ Processos ativos</li>
+              <li>✓ Documento oficial</li>
+            </ul>
+            <div class="card-price">R$ 7,90<span>/consulta</span></div>
+            <button class="card-btn">Consultar Certidão</button>
+          </div>
+
+          <!-- VEÍCULO COMPLETO -->
+          <div class="consulta-detailed-card" data-category="veiculos">
+            <div class="card-icon">🚙</div>
+            <h3>Veículo Completo</h3>
+            <p>Relatório completo do veículo com histórico detalhado.</p>
+            <ul class="card-features">
+              <li>✓ Dados técnicos completos</li>
+              <li>✓ Histórico DETRAN</li>
+              <li>✓ Sinistros e indenizações</li>
+            </ul>
+            <div class="card-price">R$ 8,90<span>/consulta</span></div>
+            <button class="card-btn">Consultar Completo</button>
+          </div>
+
+          <!-- PESSOA JURÍDICA -->
+          <div class="consulta-detailed-card" data-category="empresas">
+            <div class="card-icon">📑</div>
+            <h3>Pessoa Jurídica</h3>
+            <p>Documentação completa de uma empresa.</p>
+            <ul class="card-features">
+              <li>✓ Documentação completa</li>
+              <li>✓ Contador responsável</li>
+              <li>✓ Contatos comerciais</li>
+            </ul>
+            <div class="card-price">R$ 6,50<span>/consulta</span></div>
+            <button class="card-btn">Consultar Pessoa Jurídica</button>
+          </div>
+
+          <!-- REDES SOCIAIS -->
+          <div class="consulta-detailed-card" data-category="pessoas">
+            <div class="card-icon">📱</div>
+            <h3>Redes Sociais</h3>
+            <p>Busca de perfis em redes sociais associados a uma pessoa.</p>
+            <ul class="card-features">
+              <li>✓ Perfis encontrados</li>
+              <li>✓ Múltiplas plataformas</li>
+              <li>✓ Informações públicas</li>
+            </ul>
+            <div class="card-price">R$ 2,90<span>/consulta</span></div>
+            <button class="card-btn">Consultar Redes Sociais</button>
+          </div>
+
+          <!-- DÍVIDAS -->
+          <div class="consulta-detailed-card" data-category="financeiro">
+            <div class="card-icon">💳</div>
+            <h3>Consulta Dívidas</h3>
+            <p>Informações sobre débitos em aberto e inadimplência.</p>
+            <ul class="card-features">
+              <li>✓ Débitos em aberto</li>
+              <li>✓ Status de negativação</li>
+              <li>✓ Credores e valores</li>
+            </ul>
+            <div class="card-price">R$ 3,90<span>/consulta</span></div>
+            <button class="card-btn">Consultar Dívidas</button>
+          </div>
+
+          <!-- EMPRESA COMPLETO -->
+          <div class="consulta-detailed-card" data-category="empresas">
+            <div class="card-icon">🏢</div>
+            <h3>Relatório Empresa</h3>
+            <p>Relatório completo e detalhado de uma empresa.</p>
+            <ul class="card-features">
+              <li>✓ Informações fiscais</li>
+              <li>✓ Histórico comercial</li>
+              <li>✓ Análise de risco</li>
+            </ul>
+            <div class="card-price">R$ 9,90<span>/consulta</span></div>
+            <button class="card-btn">Relatório Completo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>Comece a Consultar Agora</h2>
+        <p>Acesso imediato a todas as consultas. Dados precisos em tempo real.</p>
+        <button class="btn btn-primary">Criar Conta</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Scarlet Buscas</h4>
+          <p>Plataforma de consultas de dados precisa, rápida e confiável.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Links Rápidos</h4>
+          <a href="index.html">Home</a>
+          <a href="consultas.html">Consultas</a>
+          <a href="index.html#pricing">Preços</a>
+          <a href="index.html#contact">Contato</a>
+        </div>
+        <div class="footer-section">
+          <h4>Suporte</h4>
+          <a href="mailto:suporte@scarlethuscas.com">suporte@scarlethuscas.com</a>
+          <a href="tel:+5511999999999">+55 (11) 99999-9999</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Scarlet Buscas. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    auth.requireAuth();
+    const sbEl = document.getElementById('sb-username');
+    if (sbEl) sbEl.textContent = auth.currentUser() || '';
+
+  </script>
+  <script>
+    // Consultas page specific script
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const consultasCards = document.querySelectorAll('.consulta-detailed-card');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.querySelector('.search-btn');
+
+    // Filter by category
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const filter = tab.getAttribute('data-filter');
+        filterTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        consultasCards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          if(filter === 'all' || category === filter) {
+            card.style.display = 'block';
+            setTimeout(() => card.style.opacity = '1', 10);
+          } else {
+            card.style.opacity = '0';
+            setTimeout(() => card.style.display = 'none', 300);
+          }
+        });
+      });
+    });
+
+    // Search functionality
+    function filterBySearch(query) {
+      const lowerQuery = query.toLowerCase();
+      consultasCards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const description = card.querySelector('p').textContent.toLowerCase();
+        if(title.includes(lowerQuery) || description.includes(lowerQuery)) {
+          card.style.display = 'block';
+          setTimeout(() => card.style.opacity = '1', 10);
+        } else {
+          card.style.opacity = '0';
+          setTimeout(() => card.style.display = 'none', 300);
+        }
+      });
+    }
+
+    searchBtn.addEventListener('click', () => {
+      filterBySearch(searchInput.value);
+    });
+
+    searchInput.addEventListener('keyup', (e) => {
+      if(e.key === 'Enter') {
+        filterBySearch(searchInput.value);
+      } else if(searchInput.value === '') {
+        consultasCards.forEach(card => card.style.display = 'block');
+      }
+    });
+
+    // Card buttons
+    document.querySelectorAll('.card-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const cardTitle = e.target.closest('.consulta-detailed-card').querySelector('h3').textContent;
+        alert(`Você está realizando uma consulta de: ${cardTitle}`);
+      });
+    });
+  </script>
+</body>
+</html>

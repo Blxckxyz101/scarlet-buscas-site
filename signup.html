@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cadastro — Scarlet Buscas</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-left">
+        <div class="brand">
+          <img src="assets/logo.svg" alt="Scarlet Buscas">
+          <strong>Scarlet Buscas</strong>
+        </div>
+        <h2>Crie sua conta</h2>
+        <p>Tenha acesso ao painel, histórico de consultas e tarifas especiais.</p>
+        <div class="helper">Cadastro rápido e seguro (demo local)</div>
+      </div>
+      <div class="auth-right">
+        <h3>Criar Conta</h3>
+        <form id="signupForm" class="auth-form" autocomplete="on">
+          <div class="field">
+            <label for="username">Usuário</label>
+            <input id="username" name="username" class="input" required autocomplete="username">
+          </div>
+          <div class="field">
+            <label for="email">Email (opcional)</label>
+            <input id="email" name="email" type="email" class="input" autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="password">Senha</label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input id="password" name="password" type="password" class="input" required autocomplete="new-password">
+              <button type="button" class="toggle-pass" id="togglePassS">👁️</button>
+            </div>
+            <div class="helper">Use pelo menos 8 caracteres.</div>
+          </div>
+          <div class="field">
+            <label for="password2">Confirmar Senha</label>
+            <input id="password2" name="password2" type="password" class="input" required autocomplete="new-password">
+          </div>
+          <div class="form-msg" id="signupMsg"></div>
+          <button type="submit" class="btn-primary">Criar conta</button>
+          <p class="small">Já tem conta? <a href="login.html">Entrar</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="auth.js"></script>
+  <script>
+    const toggleS = document.getElementById('togglePassS');
+    const pwdS = document.getElementById('password');
+    const msg = document.getElementById('signupMsg');
+    toggleS.addEventListener('click', ()=>{
+      pwdS.type = pwdS.type === 'password' ? 'text' : 'password';
+      toggleS.textContent = pwdS.type === 'password' ? '👁️' : '🙈';
+    });
+
+    document.getElementById('signupForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      msg.textContent = '';
+      const u = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const p = pwdS.value;
+      const p2 = document.getElementById('password2').value;
+      if(p.length < 8) return msg.textContent = 'Senha muito curta';
+      if(p !== p2) return msg.textContent = 'Senhas não conferem';
+      try{
+        await auth.registerUser(u,email,p);
+        location.href = 'dashboard.html';
+      }catch(err){
+        msg.textContent = err.message || 'Erro no cadastro';
+      }
+    });
+  </script>
+</body>
+</html>
