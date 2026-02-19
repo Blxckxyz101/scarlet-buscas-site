@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel | Scarlet Buscas</title>
+  <meta name="description" content="Painel de controle - Scarlet Buscas">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-brand">
+        <svg width="140" height="24" viewBox="0 0 140 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#b91c1c;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <text x="0" y="18" font-family="Inter" font-size="18" font-weight="700" fill="url(#grad)">Scarlet</text>
+          <text x="70" y="18" font-family="Inter" font-size="18" font-weight="700" fill="#9ca3af">Buscas</text>
+        </svg>
+      </a>
+      <button class="sidebar-close" id="sidebarClose">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#painel" class="nav-item active">
+        <span class="icon">📊</span>
+        <span>Painel</span>
+      </a>
+      <a href="consultas.html" class="nav-item">
+        <span class="icon">🔍</span>
+        <span>Consultas</span>
+      </a>
+      <a href="#planos" class="nav-item">
+        <span class="icon">🎯</span>
+        <span>Planos</span>
+      </a>
+      <a href="#carteira" class="nav-item">
+        <span class="icon">💳</span>
+        <span>Carteira</span>
+      </a>
+      <a href="#perfil" class="nav-item">
+        <span class="icon">👤</span>
+        <span>Perfil</span>
+      </a>
+      <a href="index.html" class="nav-item">
+        <span class="icon">🏠</span>
+        <span>Voltar ao Site</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-logout" id="btnLogout">
+        <span class="icon">🚪</span>
+        <span>Sair</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <button class="btn-menu" id="btnMenu">☰</button>
+        <h2 class="page-title">Painel de Controle</h2>
+      </div>
+      <div class="header-right">
+        <input type="text" class="search-box" id="searchConsultas" placeholder="🔍 Pesquisar consulta...">
+        <button class="btn-logout-mobile" id="btnLogoutMobile">🚪</button>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <!-- USER CARD -->
+      <section class="user-section">
+        <div class="user-card">
+          <div class="user-avatar">
+            <img src="https://via.placeholder.com/60" alt="Avatar">
+          </div>
+          <div class="user-info">
+            <h3 class="user-name" id="userName">João Silva</h3>
+            <p class="user-status" id="userStatus">Plano Premium Ativo</p>
+          </div>
+          <div class="user-actions">
+            <button class="btn-icon" title="Editar perfil">✏️</button>
+            <button class="btn-icon" title="Configurações">⚙️</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATS SECTION -->
+      <section class="stats-section">
+        <div class="stat-card">
+          <div class="stat-header">
+            <h4>Tempo Restante</h4>
+            <span class="stat-badge active">Ativo</span>
+          </div>
+          <div class="stat-value" id="tempoRestante">30 dias</div>
+          <div class="stat-bar">
+            <div class="stat-bar-fill" style="width: 75%"></div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <h4>Consultas Realizadas</h4>
+            <span class="stat-icon">🔍</span>
+          </div>
+          <div class="stat-value" id="consultasCount">1.234</div>
+          <p class="stat-label">este mês</p>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <h4>Bases Disponíveis</h4>
+            <span class="stat-icon">📦</span>
+          </div>
+          <div class="stat-value" id="basesCount">42</div>
+          <p class="stat-label">bases ativas</p>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <h4>Saldo da Carteira</h4>
+            <span class="stat-icon">💰</span>
+          </div>
+          <div class="stat-value" id="walletBalance">R$ 245,50</div>
+          <button class="btn-small">+ Recarregar</button>
+        </div>
+      </section>
+
+      <!-- CONSULTAS SECTION -->
+      <section class="consultas-section">
+        <div class="section-header">
+          <h2>Módulos de Consulta Disponíveis</h2>
+          <div class="section-filters">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="popular">Populares</button>
+            <button class="filter-btn" data-filter="recently">Recentes</button>
+          </div>
+        </div>
+
+        <div class="consultas-grid" id="consultasGrid">
+          <!-- Cards serão inseridos aqui pelo JavaScript -->
+        </div>
+      </section>
+
+      <!-- CTA SECTION -->
+      <section class="cta-consulta">
+        <div class="cta-content">
+          <h2>Comece a Consultar Agora</h2>
+          <p>Acesso ilimitado a 42+ bases de dados. Resultados em tempo real.</p>
+          <button class="btn btn-primary">Acessar Consultas Completas</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>&copy; 2026 Scarlet Buscas. Todos os direitos reservados.</p>
+    </footer>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal" id="consultaModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-header">
+        <div class="modal-icon" id="modalIcon">🔍</div>
+        <div class="modal-title-group">
+          <h2 id="modalTitle">Consulta</h2>
+          <p id="modalDesc">Descrição da consulta</p>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-form">
+          <label>Insira os dados para consultar:</label>
+          <input type="text" id="modalInput" placeholder="Digite aqui...">
+          <button class="btn-primary" id="btnConsultar">Iniciar Consulta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
