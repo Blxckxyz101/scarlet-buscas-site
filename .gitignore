@@ -17,3 +17,4 @@ curso/conteudo/*.md
 !curso/conteudo/1-1.md
 !curso/conteudo/8-1.md
 curso/supabase/seed.sql
+.render/

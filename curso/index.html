@@ -31,6 +31,9 @@
       <div>
         <h1 id="titulo" class="contorno">E se você fizesse os seus próprios vídeos <span class="amarelo">"E se..."</span>?</h1>
         <p class="lead">O processo completo por trás dos vídeos animados de ilhas, linhas do tempo e historinhas: do roteiro ao upload, com as ferramentas e os comandos que eu uso de verdade.</p>
+        <ul class="selos">
+          <li>16 aulas</li><li>Scripts prontos</li><li>Shorts e vídeos longos</li><li>Acesso na hora</li>
+        </ul>
         <div class="acoes">
           <a class="btn" href="comprar.html">Quero o curso</a>
           <span class="preco-mini">R$ 47 no Pix, acesso na hora</span>
@@ -42,8 +45,84 @@
       </figure>
     </div>
   </section>
+  <div class="ondas-div" aria-hidden="true"></div>
 
-  <section aria-labelledby="processo">
+  <section class="demos" aria-labelledby="demos-t">
+    <div class="wrap">
+      <h2 id="demos-t">Veja o que você vai fazer</h2>
+      <p class="intro">Três vídeos curtos feitos com o processo do curso, do primeiro quadro ao arquivo final. Toque em "Ativar som" para ouvir a trilha, que também foi composta em código.</p>
+      <div class="demos-grid">
+        <figure class="player celular">
+          <button class="som" type="button" aria-pressed="false">Ativar som</button>
+          <video src="assets/demos/ilha.mp4" poster="assets/demos/ilha.jpg" muted loop playsinline preload="none" aria-label="Demonstração: e se 100 pessoas vivessem numa ilha por 100 anos"></video>
+          <figcaption><strong>A ilha, 100 anos</strong>Short vertical 9:16 com placar de sobreviventes.</figcaption>
+        </figure>
+        <figure class="player largo">
+          <button class="som" type="button" aria-pressed="false">Ativar som</button>
+          <video src="assets/demos/lua.mp4" poster="assets/demos/lua.jpg" muted loop playsinline preload="none" aria-label="Demonstração: e se a Lua sumisse"></video>
+          <figcaption><strong>E se a Lua sumisse?</strong>Formato 16:9 do vídeo longo, com a linha do tempo de Hoje ao Ano 10.000.</figcaption>
+        </figure>
+        <figure class="player celular">
+          <button class="som" type="button" aria-pressed="false">Ativar som</button>
+          <video src="assets/demos/arvore.mp4" poster="assets/demos/arvore.jpg" muted loop playsinline preload="none" aria-label="Demonstração: e se você plantasse uma árvore por dia"></video>
+          <figcaption><strong>Uma árvore por dia</strong>Short de historinha, com personagem que envelhece.</figcaption>
+        </figure>
+      </div>
+      <p class="demos-nota">Os três foram desenhados em código e renderizados quadro a quadro a 12 fps no Chromium headless, com legenda de palavra amarela e trilha gerada em numpy. Os seus vão ter narração, que entra no módulo 2.</p>
+    </div>
+  </section>
+
+  <section class="interativo" aria-labelledby="int-t">
+    <div class="wrap">
+      <h2 id="int-t">Arraste a linha do tempo</h2>
+      <p class="intro">Cada cena é uma função do tempo: dá o segundo, ela desenha o quadro. Mexa no controle e veja a mesma cena em qualquer ponto da história, sem renderizar nada.</p>
+      <div class="palco-interativo">
+        <div class="tela"><canvas id="interativo" role="img" aria-label="Cena da árvore por dia, controlada pelo seletor de tempo ao lado."></canvas></div>
+        <div class="controle">
+          <label for="tempo">Linha do tempo</label>
+          <input id="tempo" type="range" min="0" max="5" step="1" value="0" aria-describedby="tempo-saida">
+          <div class="marcas" aria-hidden="true"><span>Dia 1</span><span>Ano 1</span><span>Ano 10</span><span>Ano 30</span><span>Ano 50</span><span>Hoje</span></div>
+          <output id="tempo-saida" for="tempo">DIA 1</output>
+          <p id="tempo-texto">Téo planta a primeira semente no morro pelado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="bast-t">
+    <div class="wrap">
+      <h2 id="bast-t">Do roteiro ao quadro</h2>
+      <p class="intro">Um trecho real do caminho: o roteiro marca o salto no tempo, o faster-whisper diz em que segundo a frase acontece, e a cena desenha aquele momento.</p>
+      <div class="bastidor">
+        <div>
+          <h3>1. O roteiro</h3>
+<pre><span class="m">[DIA 7]</span>
+No sétimo dia, a <span class="m">*água*</span> acabou.
+<span class="m">*Rafa*</span> achou uma nascente
+no alto do <span class="m">*morro*</span>.
+<span class="m">[PLACAR: SOBREVIVENTES 94]</span></pre>
+          <p>Marcadores entre colchetes viram cena e placar. Os asteriscos viram palavra amarela na legenda.</p>
+        </div>
+        <div>
+          <h3>2. O tempo de cada palavra</h3>
+<pre>{ <span class="c">"inicio"</span>: 8.40,
+  <span class="c">"fim"</span>: 10.12,
+  <span class="c">"texto"</span>: "No sétimo dia, a água acabou.",
+  <span class="c">"palavras"</span>: [
+    { "p": "água", "inicio": 9.31,
+      "fim": 9.66 } ] }</pre>
+          <p>O faster-whisper devolve o segundo exato. A cena do Dia 7 começa em 8,40 s.</p>
+        </div>
+        <div>
+          <h3>3. O quadro</h3>
+          <img src="assets/demos/ilha-dia7.jpg" alt="Quadro da cena Dia 7: a ilha com o placar de 94 sobreviventes e a legenda com a palavra água em amarelo." loading="lazy" width="960" height="540">
+          <p>O Claude escreve a função da cena, o render salva um PNG a cada 1/12 de segundo e o ffmpeg junta tudo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="numeros" aria-labelledby="processo">
     <div class="wrap">
       <h2 id="processo">Sete etapas, sempre na mesma ordem</h2>
       <p class="intro">Cada etapa gera um arquivo que a próxima usa. Você aprende uma de cada vez e, no fim do curso, tem um vídeo pronto para publicar.</p>
@@ -59,7 +138,7 @@
     </div>
   </section>
 
-  <section class="numeros" aria-labelledby="numeros">
+  <section aria-labelledby="numeros">
     <div class="wrap">
       <h2 id="numeros">Quanto dá trabalho, em números</h2>
       <p class="intro">O render roda sozinho enquanto você faz outra coisa. O tempo que você gasta de verdade é no roteiro e na revisão das cenas.</p>
@@ -87,7 +166,7 @@
     </div>
   </section>
 
-  <section id="grade" aria-labelledby="grade-t">
+  <section id="grade" class="numeros" aria-labelledby="grade-t">
     <div class="wrap">
       <h2 id="grade-t">O que tem no curso</h2>
       <p class="intro">16 aulas em texto, com todos os comandos e scripts prontos para copiar. As aulas marcadas como grátis podem ser lidas agora, sem conta.</p>
@@ -181,6 +260,29 @@
     </div>
   </section>
 
+  <section class="para-quem" aria-labelledby="pq-t">
+    <div class="wrap">
+      <h2 id="pq-t">Para quem é</h2>
+      <div class="perfis">
+        <div>
+          <svg class="icone" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="14" width="52" height="36" rx="8" fill="#C0462E" stroke="#102233" stroke-width="3"/><path d="M27 24v16l13-8z" fill="#fff" stroke="#102233" stroke-width="2.5" stroke-linejoin="round"/></svg>
+          <h3>Quem já tem um canal</h3>
+          <p>e quer um formato que dá para repetir toda semana, com um processo que fica mais rápido a cada vídeo.</p>
+        </div>
+        <div>
+          <svg class="icone" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="22" r="10" fill="#FFD60A" stroke="#102233" stroke-width="3"/><path d="M14 54c2-12 10-18 18-18s16 6 18 18" fill="#7BC4E2" stroke="#102233" stroke-width="3"/><path d="M8 8l48 48" stroke="#102233" stroke-width="4" stroke-linecap="round"/></svg>
+          <h3>Quem não quer aparecer</h3>
+          <p>Nada de câmera nem de rosto: a voz é gerada e os personagens são desenhados em código.</p>
+        </div>
+        <div>
+          <svg class="icone" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="40" rx="6" fill="#102233"/><path d="M18 24l-6 6 6 6M46 24l6 6-6 6M36 20l-8 20" stroke="#FFD60A" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="22" y="52" width="20" height="4" rx="2" fill="#102233"/></svg>
+          <h3>Quem gosta de tecnologia</h3>
+          <p>e quer usar o Claude, o ffmpeg e o Whisper num projeto de verdade, sem precisar ser programador.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="oferta" aria-labelledby="oferta-t">
     <div class="wrap">
       <div class="oferta-box">
@@ -198,6 +300,7 @@
           <p class="preco"><small>R$</small>47</p>
           <p class="preco-nota">Pagamento único no Pix. O acesso é liberado assim que o Pix é confirmado.</p>
           <a class="btn largo" href="comprar.html">Comprar com Pix</a>
+          <p class="garantia"><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><path d="M17 3l12 5v8c0 8-5 13-12 15C10 29 5 24 5 16V8z" fill="#3C9A5F" stroke="#102233" stroke-width="2.5"/><path d="M11 17l4 4 8-9" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/></svg><span>7 dias para desistir. Se o curso não for para você, peça o reembolso em até 7 dias da compra e o valor volta pelo Pix.</span></p>
         </div>
       </div>
     </div>
@@ -222,11 +325,55 @@
   </div>
 </footer>
 
+<div class="barra-compra" id="barra" aria-hidden="true">
+  <span><strong>R$ 47</strong> no Pix</span>
+  <a class="btn" href="comprar.html" tabindex="-1">Quero o curso</a>
+</div>
+
 <script type="module">
-  import { startHero } from "./js/hero.js";
+  import { DEMOS, tocar, SEG, ABERTURA, FPS } from "./js/demos.js";
   import { wireNav } from "./js/app.js";
-  startHero(document.getElementById("hero"));
   wireNav();
+  tocar(document.getElementById("hero"), DEMOS.ilha, { abertura: false });
+
+  // Linha do tempo interativa
+  const cena = tocar(document.getElementById("interativo"), DEMOS.arvore, { abertura: false, autoplay: false });
+  const textos = [
+    "Téo planta a primeira semente no morro pelado.",
+    "Um ano depois, o vizinho ainda acha graça.",
+    "Dez anos e 3.650 árvores: o morro fica verde.",
+    "Com sombra e fruta, os pássaros voltam.",
+    "Cinquenta anos depois, a cidade tem uma floresta.",
+    "E a pergunta final, para os comentários.",
+  ];
+  const range = document.getElementById("tempo");
+  const mostrar = () => {
+    const i = +range.value, e = DEMOS.arvore.etapas[i];
+    cena.seek(Math.round((i * SEG + 1.9) * FPS));
+    document.getElementById("tempo-saida").textContent = e.t;
+    document.getElementById("tempo-texto").textContent = textos[i];
+  };
+  range.addEventListener("input", mostrar);
+  mostrar();
+
+  // Vídeos: tocam mudos quando aparecem, som com um toque
+  const videos = [...document.querySelectorAll(".player video")];
+  const io = new IntersectionObserver((ens) => ens.forEach(({ target, isIntersecting }) => {
+    if (isIntersecting && !matchMedia("(prefers-reduced-motion: reduce)").matches) target.play().catch(() => {});
+    else target.pause();
+  }), { threshold: 0.4 });
+  videos.forEach((v) => io.observe(v));
+  document.querySelectorAll(".player .som").forEach((b) => b.addEventListener("click", () => {
+    const v = b.nextElementSibling, ligar = v.muted;
+    videos.forEach((o) => { o.muted = true; o.previousElementSibling.setAttribute("aria-pressed", "false"); o.previousElementSibling.textContent = "Ativar som"; });
+    if (ligar) { v.muted = false; v.currentTime = 0; v.play(); b.setAttribute("aria-pressed", "true"); b.textContent = "Som ligado"; }
+  }));
+
+  // Barra de compra no celular depois do hero
+  const barra = document.getElementById("barra");
+  document.body.classList.add("tem-barra");
+  new IntersectionObserver(([en]) => barra.classList.toggle("visivel", !en.isIntersecting && !document.getElementById("oferta").matches(":hover")))
+    .observe(document.querySelector(".hero"));
 </script>
 </body>
 </html>
