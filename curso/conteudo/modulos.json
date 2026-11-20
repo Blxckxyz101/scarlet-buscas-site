@@ -1,0 +1,11 @@
+[
+  {"id": 0, "title": "Comece aqui", "summary": "O caminho completo de um vídeo, do roteiro ao upload, e o que instalar antes."},
+  {"id": 1, "title": "Ideia e roteiro \"E se...\"", "summary": "Linha do tempo do Dia 1 ao Ano 100, personagens fictícios, placar, virada e a pergunta final."},
+  {"id": 2, "title": "Narração", "summary": "Voz no ElevenLabs e o ajuste de ritmo com o ffmpeg."},
+  {"id": 3, "title": "Tempo de cada palavra", "summary": "faster-whisper para saber quando cada frase começa e termina."},
+  {"id": 4, "title": "Animação com o Claude", "summary": "O kit Claude Animation Base (p5.js + p5.brush), cenas escritas com o Claude e render a 12 fps."},
+  {"id": 5, "title": "Legendas", "summary": "Arquivo .ass gerado por script, palavras-chave em amarelo, gravado no vídeo."},
+  {"id": 6, "title": "Áudio final", "summary": "Voz, trilha e efeitos com ducking, normalizados em -16 LUFS."},
+  {"id": 7, "title": "Exportar e publicar", "summary": "Encode 1080p e 1080x1920, thumbnail, título, descrição e capítulos."},
+  {"id": 8, "title": "Direitos e cuidados", "summary": "Pessoas reais, personagens de terceiros, música e licença do kit."}
+]

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lilita+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<title>Entrar — E se...</title>
+<meta name="robots" content="noindex">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="marca" href="index.html">E se<span>...</span></a>
+    <a href="aluno.html" data-nav-conta>Entrar</a>
+    <button type="button" class="link" data-sair hidden>Sair</button>
+  </div>
+</header>
+<main class="pagina">
+  <div class="wrap estreito">
+    <div class="cartao">
+      <div class="abas" role="tablist">
+        <button type="button" role="tab" id="aba-criar" aria-selected="true">Criar conta</button>
+        <button type="button" role="tab" id="aba-entrar" aria-selected="false">Entrar</button>
+      </div>
+      <div id="msg" role="status"></div>
+      <form id="form" novalidate>
+        <div class="campo">
+          <label for="email">E-mail</label>
+          <input id="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="campo">
+          <label for="senha">Senha</label>
+          <input id="senha" type="password" autocomplete="new-password" minlength="6" required>
+          <p class="ajuda" id="senha-ajuda">Pelo menos 6 caracteres.</p>
+        </div>
+        <button class="btn largo" id="enviar" type="submit">Criar conta</button>
+      </form>
+      <p class="ajuda" style="margin-top:18px"><a href="#" id="esqueci" hidden>Esqueci minha senha</a></p>
+    </div>
+  </div>
+</main>
+<script type="module">
+  import { sb, getUser, wireNav } from "./js/app.js";
+  wireNav();
+  const params = new URLSearchParams(location.search);
+  const pedido = params.get("next") || "";
+  const next = /^[a-z0-9-]+\.html(\?[\w=&%.-]*)?$/i.test(pedido) ? pedido : "aluno.html";
+  const $ = (id) => document.getElementById(id);
+  let modo = params.get("modo") === "entrar" ? "entrar" : "criar";
+
+  if (await getUser()) location.replace(next);
+
+  function aviso(texto, tipo = "erro") {
+    $("msg").innerHTML = texto ? `<p class="aviso ${tipo}"></p>` : "";
+    if (texto) $("msg").firstChild.textContent = texto;
+  }
+  function setModo(m) {
+    modo = m;
+    $("aba-criar").setAttribute("aria-selected", m === "criar");
+    $("aba-entrar").setAttribute("aria-selected", m === "entrar");
+    $("enviar").textContent = m === "criar" ? "Criar conta" : "Entrar";
+    $("senha").autocomplete = m === "criar" ? "new-password" : "current-password";
+    $("senha-ajuda").hidden = m !== "criar";
+    $("esqueci").hidden = m !== "entrar";
+    aviso("");
+  }
+  $("aba-criar").onclick = () => setModo("criar");
+  $("aba-entrar").onclick = () => setModo("entrar");
+  setModo(modo);
+
+  const traduz = (e) => {
+    const m = (e?.message || "").toLowerCase();
+    if (m.includes("invalid login")) return "E-mail ou senha incorretos.";
+    if (m.includes("already registered")) return "Este e-mail já tem conta. Use a aba Entrar.";
+    if (m.includes("email not confirmed")) return "Confirme seu e-mail pelo link que enviamos antes de entrar.";
+    if (m.includes("rate limit")) return "Muitas tentativas seguidas. Espere um minuto e tente de novo.";
+    if (m.includes("password")) return "A senha precisa ter pelo menos 6 caracteres.";
+    return "Não foi possível continuar: " + (e?.message || "erro desconhecido") + ".";
+  };
+
+  $("form").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const email = $("email").value.trim(), password = $("senha").value;
+    if (!email.includes("@")) return aviso("Digite um e-mail válido.");
+    if (password.length < 6) return aviso("A senha precisa ter pelo menos 6 caracteres.");
+    $("enviar").disabled = true;
+    try {
+      if (modo === "criar") {
+        const redir = new URL(next, location.href).href;
+        const { data, error } = await sb.auth.signUp({ email, password, options: { emailRedirectTo: redir } });
+        if (error) throw error;
+        if (data.session) return location.replace(next);
+        if (data.user && data.user.identities?.length === 0) throw new Error("already registered");
+        aviso("Conta criada. Enviamos um link de confirmação para " + email + ". Abra o link e você volta para cá já com acesso.", "ok");
+      } else {
+        const { error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        location.replace(next);
+      }
+    } catch (e) { aviso(traduz(e)); }
+    finally { $("enviar").disabled = false; }
+  });
+
+  $("esqueci").addEventListener("click", async (ev) => {
+    ev.preventDefault();
+    const email = $("email").value.trim();
+    if (!email.includes("@")) return aviso("Digite seu e-mail no campo acima e clique de novo.");
+    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: new URL("senha.html", location.href).href });
+    error ? aviso(traduz(error)) : aviso("Se houver uma conta com esse e-mail, você vai receber um link para criar uma nova senha.", "ok");
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lilita+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<title>Nova senha — E se...</title>
+<meta name="robots" content="noindex">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="marca" href="index.html">E se<span>...</span></a>
+    <a href="aluno.html" data-nav-conta>Entrar</a>
+    <button type="button" class="link" data-sair hidden>Sair</button>
+  </div>
+</header>
+<main class="pagina">
+  <div class="wrap estreito">
+    <div class="cartao">
+      <h1 style="font-size:2rem">Criar nova senha</h1>
+      <div id="msg" role="status"></div>
+      <form id="form">
+        <div class="campo">
+          <label for="senha">Nova senha</label>
+          <input id="senha" type="password" autocomplete="new-password" minlength="6" required>
+        </div>
+        <button class="btn largo" id="enviar" type="submit">Salvar nova senha</button>
+      </form>
+    </div>
+  </div>
+</main>
+<script type="module">
+  import { sb } from "./js/app.js";
+  const msg = document.getElementById("msg");
+  const aviso = (t, tipo = "erro") => { msg.innerHTML = `<p class="aviso ${tipo}"></p>`; msg.firstChild.textContent = t; };
+  document.getElementById("form").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const password = document.getElementById("senha").value;
+    if (password.length < 6) return aviso("A senha precisa ter pelo menos 6 caracteres.");
+    const { error } = await sb.auth.updateUser({ password });
+    if (error) return aviso("O link expirou ou já foi usado. Peça um novo em Entrar > Esqueci minha senha.");
+    aviso("Senha salva. Abrindo a área do aluno…", "ok");
+    setTimeout(() => location.replace("aluno.html"), 1200);
+  });
+</script>
+</body>
+</html>

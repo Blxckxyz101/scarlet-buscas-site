@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lilita+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<title>Aula — E se...</title>
+<meta name="robots" content="noindex">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="marca" href="index.html">E se<span>...</span></a>
+    <a href="aluno.html" data-nav-conta>Entrar</a>
+    <button type="button" class="link" data-sair hidden>Sair</button>
+  </div>
+</header>
+<main class="pagina">
+  <div class="wrap aula-layout">
+    <nav class="aula-lateral" aria-label="Aulas do curso" id="lateral"></nav>
+    <article class="aula" id="aula" aria-busy="true"><p>Carregando a aula…</p></article>
+  </div>
+</main>
+<script type="module">
+  import { sb, getUser, isEnrolled, wireNav, esc } from "./js/app.js";
+  import { carregarIndice, carregarProgresso } from "./js/curso.js";
+  import { marked } from "https://cdn.jsdelivr.net/npm/marked@12.0.2/+esm";
+  import DOMPurify from "https://cdn.jsdelivr.net/npm/dompurify@3.1.6/+esm";
+  wireNav();
+
+  const id = new URLSearchParams(location.search).get("id") || "";
+  const el = document.getElementById("aula");
+  const user = await getUser();
+  const [indice, aluno, feitas] = await Promise.all([carregarIndice(), isEnrolled(user), carregarProgresso(user)]);
+  const todas = indice.flatMap((m) => m.aulas);
+  const i = todas.findIndex((a) => a.id === id);
+  const aula = todas[i];
+
+  document.getElementById("lateral").innerHTML = '<p><a href="aluno.html">Todas as aulas</a></p>' + indice.map((m) => `
+    <h4>${esc(m.title)}</h4><ol>${m.aulas.map((a) => {
+      const aberta = aluno || a.is_preview;
+      const t = esc(a.title) + (feitas.has(a.id) ? " ✓" : "");
+      return `<li>${aberta ? `<a href="aula.html?id=${encodeURIComponent(a.id)}"${a.id === id ? ' aria-current="page"' : ""}>${t}</a>` : `<span class="bloqueada">${t}</span>`}</li>`;
+    }).join("")}</ol>`).join("");
+
+  function fim(html) { el.innerHTML = html; el.setAttribute("aria-busy", "false"); }
+
+  if (!aula) {
+    fim('<h1 style="font-size:2rem">Aula não encontrada</h1><p>O link pode estar incompleto. Escolha uma aula na lista ao lado.</p>');
+  } else {
+    document.title = aula.title + " — E se...";
+    const { data: conteudo } = await sb.from("lesson_content").select("body_md,video_url").eq("lesson_id", id).maybeSingle();
+    if (!conteudo) {
+      const cta = user ? '<a class="btn" href="comprar.html">Pagar R$ 47 no Pix</a>' : '<a class="btn" href="entrar.html?next=comprar.html">Criar conta e comprar</a>';
+      fim(`<h1 style="font-size:2.2rem">${esc(aula.title)}</h1><div class="cartao"><p>Esta aula faz parte do curso completo. Depois do Pix confirmado, ela abre aqui mesmo.</p>${cta}</div>`);
+    } else {
+      const video = embed(conteudo.video_url);
+      const corpo = DOMPurify.sanitize(marked.parse(conteudo.body_md));
+      const ant = todas[i - 1], prox = todas[i + 1];
+      const podeAbrir = (a) => a && (aluno || a.is_preview);
+      fim(`
+        <p class="ajuda">${esc(indice.find((m) => m.id === aula.module_id).title)}, ${aula.minutes} min de leitura</p>
+        <h1 style="font-size:clamp(2rem,4vw,2.8rem)">${esc(aula.title)}</h1>
+        ${video}
+        ${corpo}
+        <div class="aula-rodape">
+          ${podeAbrir(ant) ? `<a class="btn secundario pequeno" href="aula.html?id=${encodeURIComponent(ant.id)}">Anterior</a>` : "<span></span>"}
+          ${aluno ? `<button class="btn pequeno" id="feito" type="button" aria-pressed="${feitas.has(id)}">${feitas.has(id) ? "Concluída ✓" : "Marcar como concluída"}</button>` : ""}
+          ${podeAbrir(prox) ? `<a class="btn pequeno" href="aula.html?id=${encodeURIComponent(prox.id)}">Próxima: ${esc(prox.title)}</a>` : (!aluno ? '<a class="btn pequeno" href="comprar.html">Liberar o curso completo</a>' : "")}
+        </div>`);
+      el.querySelectorAll("pre").forEach((pre) => {
+        const b = document.createElement("button");
+        b.className = "copiar"; b.type = "button"; b.textContent = "Copiar";
+        b.onclick = async () => { await navigator.clipboard.writeText(pre.querySelector("code")?.innerText ?? pre.innerText); b.textContent = "Copiado"; setTimeout(() => (b.textContent = "Copiar"), 1500); };
+        pre.appendChild(b);
+      });
+      const botao = document.getElementById("feito");
+      botao?.addEventListener("click", async () => {
+        const marcado = botao.getAttribute("aria-pressed") === "true";
+        botao.disabled = true;
+        const { error } = marcado
+          ? await sb.from("lesson_progress").delete().eq("user_id", user.id).eq("lesson_id", id)
+          : await sb.from("lesson_progress").insert({ user_id: user.id, lesson_id: id });
+        botao.disabled = false;
+        if (error) return;
+        botao.setAttribute("aria-pressed", String(!marcado));
+        botao.textContent = !marcado ? "Concluída ✓" : "Marcar como concluída";
+      });
+    }
+  }
+
+  // Aceita links do YouTube, Vimeo ou qualquer URL de embed https.
+  function embed(url) {
+    if (!url) return "";
+    let src = url;
+    const yt = url.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/);
+    const vm = url.match(/vimeo\.com\/(\d+)/);
+    if (yt) src = "https://www.youtube-nocookie.com/embed/" + yt[1];
+    else if (vm) src = "https://player.vimeo.com/video/" + vm[1];
+    if (!/^https:\/\//.test(src)) return "";
+    return `<div class="video"><iframe src="${esc(src)}" title="Vídeo da aula" allow="fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`;
+  }
+</script>
+</body>
+</html>

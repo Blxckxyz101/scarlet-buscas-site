@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lilita+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<title>Área do aluno — E se...</title>
+<meta name="robots" content="noindex">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="marca" href="index.html">E se<span>...</span></a>
+    <a href="aluno.html" data-nav-conta>Entrar</a>
+    <button type="button" class="link" data-sair hidden>Sair</button>
+  </div>
+</header>
+<main class="pagina">
+  <div class="wrap" style="max-width:920px">
+    <div id="msg" role="status"></div>
+    <div id="topo"></div>
+    <div id="lista" class="grade lista-aulas" aria-busy="true"><p>Carregando as aulas…</p></div>
+  </div>
+</main>
+<script type="module">
+  import { requireUser, isEnrolled, wireNav, esc } from "./js/app.js";
+  import { carregarIndice, carregarProgresso } from "./js/curso.js";
+  wireNav();
+  const user = await requireUser();
+  const [aluno, indice, feitas] = await Promise.all([isEnrolled(user), carregarIndice(), carregarProgresso(user)]);
+  const todas = indice.flatMap((m) => m.aulas);
+  const proxima = todas.find((a) => !feitas.has(a.id)) || todas[0];
+  const pct = todas.length ? Math.round((feitas.size / todas.length) * 100) : 0;
+
+  if (new URLSearchParams(location.search).has("bemvindo")) {
+    document.getElementById("msg").innerHTML = '<p class="aviso ok">Pagamento confirmado. Bem-vindo ao curso!</p>';
+  }
+
+  document.getElementById("topo").innerHTML = aluno ? `
+    <div class="cartao" style="margin-bottom:40px">
+      <h1 style="font-size:2.2rem">Seu progresso</h1>
+      <div class="progresso" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}" aria-label="Aulas concluídas"><div style="width:${pct}%"></div></div>
+      <p class="ajuda">${feitas.size} de ${todas.length} aulas concluídas</p>
+      <p style="margin:18px 0 0"><a class="btn" href="aula.html?id=${encodeURIComponent(proxima.id)}">${feitas.size ? "Continuar" : "Começar"}: ${esc(proxima.title)}</a></p>
+    </div>` : `
+    <div class="cartao" style="margin-bottom:40px">
+      <h1 style="font-size:2.2rem">Falta só o pagamento</h1>
+      <p>Sua conta está criada, mas o curso ainda não foi liberado. Enquanto isso, as aulas marcadas como grátis já podem ser lidas.</p>
+      <a class="btn" href="comprar.html">Pagar R$ 47 no Pix</a>
+    </div>`;
+
+  document.getElementById("lista").innerHTML = indice.map((m) => `
+    <div class="modulo">
+      <div><h3>${esc(m.title)}</h3><p class="resumo">${esc(m.summary)}</p></div>
+      <ul>${m.aulas.map((a) => {
+        const aberta = aluno || a.is_preview, feito = feitas.has(a.id);
+        const marca = `<span class="check ${feito ? "feito" : ""}" aria-hidden="true">${feito ? "✓" : ""}</span>`;
+        const nome = aberta ? `<a href="aula.html?id=${encodeURIComponent(a.id)}">${esc(a.title)}</a>` : `<span class="bloqueada">${esc(a.title)}</span>`;
+        const extra = !aluno && a.is_preview ? '<span class="tag-gratis">grátis</span>' : "";
+        return `<li><span>${marca}${nome}${extra}${feito ? '<span class="pular">(concluída)</span>' : ""}</span><span class="min">${a.minutes} min</span></li>`;
+      }).join("")}</ul>
+    </div>`).join("");
+  document.getElementById("lista").setAttribute("aria-busy", "false");
+</script>
+</body>
+</html>

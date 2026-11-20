@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lilita+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<title>Comprar — E se...</title>
+<meta name="robots" content="noindex">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="marca" href="index.html">E se<span>...</span></a>
+    <a href="aluno.html" data-nav-conta>Entrar</a>
+    <button type="button" class="link" data-sair hidden>Sair</button>
+  </div>
+</header>
+<main class="pagina">
+  <div class="wrap" style="max-width:860px">
+    <div class="cartao">
+      <h1 style="font-size:2.2rem">Pagar com Pix</h1>
+      <p id="quem" class="ajuda" style="margin-top:-8px"></p>
+      <div id="msg" role="status" aria-live="polite"></div>
+
+      <div id="passo-gerar">
+        <p>Curso completo, 16 aulas. Pagamento único de <strong>R$ 47,00</strong>. O acesso abre nesta mesma página assim que o banco confirmar o Pix.</p>
+        <button class="btn" id="gerar" type="button">Gerar Pix de R$ 47</button>
+      </div>
+
+      <div id="passo-pagar" class="pix" hidden>
+        <img id="qr" class="qr" alt="QR Code do Pix">
+        <div>
+          <h2 style="font-size:1.5rem">Escaneie o QR Code ou copie o código</h2>
+          <ol style="padding-left:1.2em;margin:0 0 18px">
+            <li>Abra o app do seu banco e escolha Pix.</li>
+            <li>Escaneie o QR Code ou use "Pix copia e cola".</li>
+            <li>Confirme o pagamento de <strong id="valor">R$ 47,00</strong>.</li>
+          </ol>
+          <label for="codigo">Pix copia e cola</label>
+          <div class="copia">
+            <input id="codigo" type="text" readonly>
+            <button class="btn pequeno" id="copiar" type="button">Copiar</button>
+          </div>
+          <p class="status"><span class="ponto" aria-hidden="true"></span><span id="status-texto">Aguardando o pagamento…</span></p>
+          <p class="ajuda">Já pagou e nada mudou? <a href="#" id="conferir">Conferir agora</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script type="module">
+  import { requireUser, isEnrolled, callPix, wireNav } from "./js/app.js";
+  wireNav();
+  const $ = (id) => document.getElementById(id);
+  const user = await requireUser();
+  $("quem").textContent = "Conta: " + user.email;
+  if (await isEnrolled(user)) location.replace("aluno.html");
+
+  const aviso = (t, tipo = "erro") => { $("msg").innerHTML = t ? `<p class="aviso ${tipo}"></p>` : ""; if (t) $("msg").firstChild.textContent = t; };
+  let txid = null, timer = null, inicio = 0;
+
+  async function conferir(manual = false) {
+    if (!txid) return;
+    try {
+      const r = await callPix({ action: "status", txid });
+      if (r.enrolled) {
+        clearInterval(timer);
+        $("status-texto").textContent = "Pagamento confirmado!";
+        aviso("Pix confirmado. Abrindo a área do aluno…", "ok");
+        setTimeout(() => location.replace("aluno.html?bemvindo=1"), 1200);
+        return;
+      }
+      if (["EXPIRADA", "CANCELADA", "REMOVIDA_PELO_USUARIO_RECEBEDOR", "REMOVIDA_PELO_PSP"].includes(r.status)) {
+        clearInterval(timer);
+        $("passo-pagar").hidden = true; $("passo-gerar").hidden = false;
+        aviso("Este Pix expirou. Gere um novo para continuar.");
+        return;
+      }
+      if (manual) aviso("Ainda não recebemos a confirmação do banco. Isso costuma levar alguns segundos depois do pagamento.", "ok");
+    } catch (e) { if (manual) aviso(e.message); }
+    if (Date.now() - inicio > 30 * 60_000) {
+      clearInterval(timer);
+      $("status-texto").textContent = "Paramos de conferir sozinhos. Clique em Conferir agora depois de pagar.";
+    }
+  }
+
+  $("gerar").addEventListener("click", async () => {
+    $("gerar").disabled = true; aviso("");
+    try {
+      const r = await callPix({ action: "create" });
+      if (r.enrolled) return location.replace("aluno.html");
+      txid = r.txid;
+      $("codigo").value = r.pixCopiaECola;
+      if (r.qrcode_base64) $("qr").src = r.qrcode_base64.startsWith("data:") ? r.qrcode_base64 : "data:image/png;base64," + r.qrcode_base64;
+      else $("qr").hidden = true;
+      $("valor").textContent = Number(r.amount).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      $("passo-gerar").hidden = true; $("passo-pagar").hidden = false;
+      inicio = Date.now();
+      timer = setInterval(conferir, 5000);
+    } catch (e) { aviso(e.message); }
+    finally { $("gerar").disabled = false; }
+  });
+
+  $("copiar").addEventListener("click", async () => {
+    $("codigo").select();
+    try { await navigator.clipboard.writeText($("codigo").value); } catch { document.execCommand("copy"); }
+    $("copiar").textContent = "Copiado";
+    setTimeout(() => ($("copiar").textContent = "Copiar"), 2000);
+  });
+  $("conferir").addEventListener("click", (e) => { e.preventDefault(); conferir(true); });
+</script>
+</body>
+</html>

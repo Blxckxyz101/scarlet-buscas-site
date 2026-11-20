@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lilita+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<title>E se... — Curso de vídeos animados com código</title>
+<meta name="description" content="Aprenda o processo completo dos vídeos animados &quot;E se...&quot;: roteiro com linha do tempo, narração, animação em p5.js com o Claude, legendas, mixagem e publicação. Curso em português, R$ 47 no Pix.">
+<meta property="og:title" content="E se... — Curso de vídeos animados com código">
+<meta property="og:description" content="Do roteiro ao upload: o processo real por trás dos vídeos &quot;E se...&quot;, de ilhas e de historinha.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="nav">
+  <div class="wrap">
+    <a class="marca" href="index.html">E se<span>...</span></a>
+    <a href="#grade">O que tem no curso</a>
+    <a href="entrar.html" data-nav-conta>Entrar</a>
+  </div>
+</header>
+
+<main id="conteudo">
+  <section class="hero" aria-labelledby="titulo">
+    <div class="wrap hero-grid">
+      <div>
+        <h1 id="titulo" class="contorno">E se você fizesse os seus próprios vídeos <span class="amarelo">"E se..."</span>?</h1>
+        <p class="lead">O processo completo por trás dos vídeos animados de ilhas, linhas do tempo e historinhas: do roteiro ao upload, com as ferramentas e os comandos que eu uso de verdade.</p>
+        <div class="acoes">
+          <a class="btn" href="comprar.html">Quero o curso</a>
+          <span class="preco-mini">R$ 47 no Pix, acesso na hora</span>
+        </div>
+      </div>
+      <figure style="margin:0">
+        <div class="tela"><canvas id="hero" role="img" aria-label="Animação de uma ilha que passa do Dia 1 ao Ano 100: as casas aumentam, o placar de sobreviventes muda e a legenda destaca palavras em amarelo."></canvas></div>
+        <figcaption class="tela-legenda">Esta cena é desenhada em código, a 12 quadros por segundo, do mesmo jeito que os vídeos.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section aria-labelledby="processo">
+    <div class="wrap">
+      <h2 id="processo">Sete etapas, sempre na mesma ordem</h2>
+      <p class="intro">Cada etapa gera um arquivo que a próxima usa. Você aprende uma de cada vez e, no fim do curso, tem um vídeo pronto para publicar.</p>
+      <ol class="trilha">
+        <li><span class="n" aria-hidden="true">1</span><div><h3>Ideia e roteiro</h3><p>A fórmula "E se...": uma pergunta extrema, a linha do tempo do Dia 1 ao Ano 100, personagens fictícios, um placar, a virada e a pergunta final que puxa os comentários.</p></div></li>
+        <li><span class="n" aria-hidden="true">2</span><div><h3>Narração</h3><p>Voz gerada no ElevenLabs e acelerada entre 1,06x e 1,15x com o filtro <code>atempo</code> do ffmpeg, sem deixar a voz fina.</p></div></li>
+        <li><span class="n" aria-hidden="true">3</span><div><h3>Tempo de cada palavra</h3><p>O faster-whisper ouve a narração e devolve o segundo exato de cada palavra e de cada frase. Esse arquivo sincroniza o vídeo inteiro.</p></div></li>
+        <li><span class="n" aria-hidden="true">4</span><div><h3>Animação</h3><p>Cenas em p5.js com traço de pincel (p5.brush), escritas com o Claude e renderizadas no Chromium headless a 12 fps pelo kit open source Claude Animation Base.</p></div></li>
+        <li><span class="n" aria-hidden="true">5</span><div><h3>Legendas</h3><p>Um script gera o arquivo <code>.ass</code> com as palavras-chave em amarelo, e o ffmpeg grava a legenda direto no vídeo.</p></div></li>
+        <li><span class="n" aria-hidden="true">6</span><div><h3>Áudio</h3><p>Voz, trilha e efeitos numa mixagem só, com a música abaixando sozinha quando a voz fala, normalizada em -16 LUFS.</p></div></li>
+        <li><span class="n" aria-hidden="true">7</span><div><h3>Final</h3><p>Encode em 1080p para o vídeo longo ou 1080x1920 para o short, thumbnail renderizada pelo próprio kit, título, descrição e capítulos.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="numeros" aria-labelledby="numeros">
+    <div class="wrap">
+      <h2 id="numeros">Quanto dá trabalho, em números</h2>
+      <p class="intro">O render roda sozinho enquanto você faz outra coisa. O tempo que você gasta de verdade é no roteiro e na revisão das cenas.</p>
+      <div class="formatos">
+        <div class="formato vertical">
+          <h3>Short</h3>
+          <dl>
+            <dt>Duração</dt><dd>cerca de 55 s</dd>
+            <dt>Quadros</dt><dd>uns 700</dd>
+            <dt>Render</dt><dd>~15 min</dd>
+            <dt>Formato</dt><dd>1080x1920</dd>
+          </dl>
+        </div>
+        <div class="formato">
+          <h3>Vídeo longo</h3>
+          <dl>
+            <dt>Duração</dt><dd>8 a 11 min</dd>
+            <dt>Quadros</dt><dd>6.000 a 8.000</dd>
+            <dt>Render</dt><dd>40 a 60 min</dd>
+            <dt>Formato</dt><dd>1920x1080</dd>
+          </dl>
+        </div>
+      </div>
+      <p class="custo">A única parte paga por uso é a narração: cerca de 1 crédito do ElevenLabs por caractere, uns 7 mil para um vídeo de 8 minutos. O kit de animação, o ffmpeg, o faster-whisper e o Chromium são gratuitos e open source.</p>
+    </div>
+  </section>
+
+  <section id="grade" aria-labelledby="grade-t">
+    <div class="wrap">
+      <h2 id="grade-t">O que tem no curso</h2>
+      <p class="intro">16 aulas em texto, com todos os comandos e scripts prontos para copiar. As aulas marcadas como grátis podem ser lidas agora, sem conta.</p>
+      <div class="grade">
+      <div class="modulo">
+        <div><h3>Comece aqui</h3><p class="resumo">O caminho completo de um vídeo, do roteiro ao upload, e o que instalar antes.</p></div>
+        <ul>
+          <li><span><a href="aula.html?id=0-1-o-caminho-completo">O caminho completo de um vídeo</a><span class="tag-gratis">grátis</span></span><span class="min">6 min</span></li>
+          <li><span>O que instalar antes de começar</span><span class="min">8 min</span></li>
+        </ul>
+      </div>
+      <div class="modulo">
+        <div><h3>Ideia e roteiro "E se..."</h3><p class="resumo">Linha do tempo do Dia 1 ao Ano 100, personagens fictícios, placar, virada e a pergunta final.</p></div>
+        <ul>
+          <li><span><a href="aula.html?id=1-1-formula-e-se">A fórmula do "E se..."</a><span class="tag-gratis">grátis</span></span><span class="min">9 min</span></li>
+          <li><span>Escrevendo o roteiro com o Claude</span><span class="min">10 min</span></li>
+        </ul>
+      </div>
+      <div class="modulo">
+        <div><h3>Narração</h3><p class="resumo">Voz no ElevenLabs e o ajuste de ritmo com o ffmpeg.</p></div>
+        <ul>
+          <li><span>Gerando a voz no ElevenLabs</span><span class="min">8 min</span></li>
+          <li><span>Acelerando a voz com o ffmpeg</span><span class="min">5 min</span></li>
+        </ul>
+      </div>
+      <div class="modulo">
+        <div><h3>Tempo de cada palavra</h3><p class="resumo">faster-whisper para saber quando cada frase começa e termina.</p></div>
+        <ul>
+          <li><span>Transcrição com tempo de cada palavra</span><span class="min">9 min</span></li>
+        </ul>
+      </div>
+      <div class="modulo">
+        <div><h3>Animação com o Claude</h3><p class="resumo">O kit Claude Animation Base (p5.js + p5.brush), cenas escritas com o Claude e render a 12 fps.</p></div>
+        <ul>
+          <li><span>Conhecendo o Claude Animation Base</span><span class="min">10 min</span></li>
+          <li><span>Programando as cenas com o Claude</span><span class="min">12 min</span></li>
+          <li><span>Renderizando os quadros</span><span class="min">8 min</span></li>
+        </ul>
+      </div>
+      <div class="modulo">
+        <div><h3>Legendas</h3><p class="resumo">Arquivo .ass gerado por script, palavras-chave em amarelo, gravado no vídeo.</p></div>
+        <ul>
+          <li><span>Legendas .ass com palavras em amarelo</span><span class="min">11 min</span></li>
+        </ul>
+      </div>
+      <div class="modulo">
+        <div><h3>Áudio final</h3><p class="resumo">Voz, trilha e efeitos com ducking, normalizados em -16 LUFS.</p></div>
+        <ul>
+          <li><span>Trilha sem problema de direitos</span><span class="min">7 min</span></li>
+          <li><span>Mixagem com ducking e -16 LUFS</span><span class="min">9 min</span></li>
+        </ul>
+      </div>
+      <div class="modulo">
+        <div><h3>Exportar e publicar</h3><p class="resumo">Encode 1080p e 1080x1920, thumbnail, título, descrição e capítulos.</p></div>
+        <ul>
+          <li><span>Encode final: 1080p e 1080x1920</span><span class="min">6 min</span></li>
+          <li><span>Thumbnail, título, descrição e capítulos</span><span class="min">8 min</span></li>
+        </ul>
+      </div>
+      <div class="modulo">
+        <div><h3>Direitos e cuidados</h3><p class="resumo">Pessoas reais, personagens de terceiros, música e licença do kit.</p></div>
+        <ul>
+          <li><span><a href="aula.html?id=8-1-direitos">O que pode e o que não pode</a><span class="tag-gratis">grátis</span></span><span class="min">6 min</span></li>
+        </ul>
+      </div>      </div>
+    </div>
+  </section>
+
+  <section class="cuidados" aria-labelledby="cuidados">
+    <div class="wrap">
+      <h2 id="cuidados" class="contorno">Um canal sem medo de strike</h2>
+      <p class="intro">O método foi pensado para que tudo o que vai ao ar seja seu. O curso tem uma aula só sobre isso, e as regras valem para todo vídeo.</p>
+      <div class="regras">
+        <div>
+          <h3>Fica de fora</h3>
+          <ul>
+            <li>Nome, voz ou imagem de pessoas reais.</li>
+            <li>Personagens e mundos de outras obras.</li>
+            <li>Música com dono, que ativa o Content ID.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Pode usar à vontade</h3>
+          <ul>
+            <li>O kit Claude Animation Base, que é licença MIT: dá para usar em vídeo monetizado, mantendo o aviso de copyright.</li>
+            <li>Trilha composta em código ou com licença clara para vídeo.</li>
+            <li>Personagens e histórias que você inventou.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="oferta" aria-labelledby="oferta-t">
+    <div class="wrap">
+      <div class="oferta-box">
+        <div>
+          <h2 id="oferta-t">Acesso completo</h2>
+          <ul>
+            <li>As 16 aulas, do roteiro à publicação</li>
+            <li>Scripts prontos: limpeza do roteiro, tempos, legendas <code>.ass</code>, trilha em numpy</li>
+            <li>Comandos de ffmpeg para voz, mixagem e encode</li>
+            <li>Prompts para escrever roteiro e cenas com o Claude</li>
+            <li>Atualizações das aulas sem custo extra</li>
+          </ul>
+        </div>
+        <div>
+          <p class="preco"><small>R$</small>47</p>
+          <p class="preco-nota">Pagamento único no Pix. O acesso é liberado assim que o Pix é confirmado.</p>
+          <a class="btn largo" href="comprar.html">Comprar com Pix</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-t">
+    <div class="wrap">
+      <h2 id="faq-t">Perguntas frequentes</h2>
+      <details><summary>Preciso saber programar?</summary><p>Não. O código das cenas é escrito pelo Claude a partir da sua descrição; o curso mostra como descrever cada cena e como conferir o resultado. Os scripts de legenda, tempos e trilha já vêm prontos para copiar.</p></details>
+      <details><summary>Que computador eu preciso?</summary><p>Qualquer computador com Windows, macOS ou Linux que rode o Chrome. Não precisa de placa de vídeo. Com uma placa NVIDIA, a transcrição com o faster-whisper fica mais rápida.</p></details>
+      <details><summary>Quais ferramentas são pagas?</summary><p>Só a narração no ElevenLabs, por caractere. Para monetizar os vídeos, use um plano do ElevenLabs que permita uso comercial. Todo o resto é gratuito.</p></details>
+      <details><summary>O curso inclui a voz ou as músicas?</summary><p>Não. O curso ensina o processo. Cada aluno usa a própria conta do ElevenLabs e a própria trilha, e o curso mostra como compor uma trilha em código.</p></details>
+      <details><summary>Como recebo o acesso?</summary><p>Você cria uma conta com e-mail e senha, gera o Pix e paga pelo app do seu banco. A página confere o pagamento sozinha e abre a área do aluno quando o Pix é confirmado.</p></details>
+      <details><summary>As aulas são em vídeo?</summary><p>As aulas são em texto, com os comandos prontos para copiar. É mais fácil seguir um comando de ffmpeg lendo do que pausando um vídeo.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Curso independente. As animações usam o kit open source Claude Animation Base (licença MIT), p5.js e p5.brush. ElevenLabs, YouTube e as demais marcas citadas pertencem aos seus donos e não têm relação com este curso.</p>
+  </div>
+</footer>
+
+<script type="module">
+  import { startHero } from "./js/hero.js";
+  import { wireNav } from "./js/app.js";
+  startHero(document.getElementById("hero"));
+  wireNav();
+</script>
+</body>
+</html>

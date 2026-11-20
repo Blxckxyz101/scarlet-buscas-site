@@ -9,3 +9,11 @@ dist/
 build/
 .git-credentials
 *git-credentials
+
+# Curso: o conteúdo pago fica só no banco (o repositório é público).
+# As aulas grátis (0-1, 1-1, 8-1) ficam versionadas como exemplo.
+curso/conteudo/*.md
+!curso/conteudo/0-1.md
+!curso/conteudo/1-1.md
+!curso/conteudo/8-1.md
+curso/supabase/seed.sql
