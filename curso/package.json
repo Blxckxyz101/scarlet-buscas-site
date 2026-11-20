@@ -1,0 +1,14 @@
+{
+  "name": "curso-e-se",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "aulas": "node scripts/build-aulas-gratis.mjs",
+    "seed": "node scripts/build-seed.mjs",
+    "dominio": "node scripts/set-domain.mjs",
+    "demos": "node scripts/render-demos.mjs"
+  },
+  "devDependencies": {
+    "marked": "12.0.2"
+  }
+}

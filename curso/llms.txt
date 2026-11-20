@@ -1,0 +1,21 @@
+# E se...: curso de vídeos animados com código
+
+> Curso em português do Brasil que ensina o processo completo dos vídeos animados no formato "E se..." (ilhas, linhas do tempo do Dia 1 ao Ano 100, historinhas) para YouTube e shorts, sem aparecer em vídeo. Preço: R$ 47, pagamento único no Pix, acesso imediato.
+
+O curso tem 16 aulas em texto e 3 bônus. Ferramentas usadas: Claude (roteiro e cenas), ElevenLabs (narração), ffmpeg (aceleração da voz, legendas, mixagem e encode), faster-whisper (tempo de cada palavra), p5.js e p5.brush pelo kit open source Claude Animation Base (licença MIT), Chromium headless a 12 fps.
+
+Números do processo: um short de ~55 s tem ~700 quadros e renderiza em ~15 min; um vídeo de 8 a 11 min tem 6.000 a 8.000 quadros e renderiza em 40 a 60 min. A narração custa cerca de 1 crédito do ElevenLabs por caractere (~7 mil para 8 minutos).
+
+## Páginas
+- [Página do curso](https://SEU-DOMINIO/): o que o curso ensina, demonstrações, grade de aulas, preço e perguntas frequentes
+- [Comprar](https://SEU-DOMINIO/comprar.html): checkout em uma etapa, Pix de R$ 47
+
+## Aulas grátis
+- [O caminho completo de um vídeo](https://SEU-DOMINIO/aulas/o-caminho-completo.html): as 7 etapas, tempos e custos
+- [A fórmula do "E se..."](https://SEU-DOMINIO/aulas/formula-e-se.html): pergunta, linha do tempo, personagens, placar, virada e pergunta final
+- [O que pode e o que não pode](https://SEU-DOMINIO/aulas/direitos-autorais.html): direitos autorais, Content ID e licenças
+
+## Bônus incluídos
+- Pacote de 5 skills do Claude: /roteiro-e-se, /cenas-p5, /legendas-ass, /mixagem, /publicar
+- 100 ideias de vídeos "E se..." separadas por tema
+- Modelos de título, descrição com capítulos e comentário fixado

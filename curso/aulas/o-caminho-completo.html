@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O caminho completo de um vídeo | Curso de vídeos animados "E se..."</title>
+<meta name="description" content="As 7 etapas de um vídeo animado &quot;E se...&quot;: roteiro, narração com IA, tempos com faster-whisper, animação em p5.js, legendas, mixagem e encode. Com tempos e custos reais.">
+<link rel="canonical" href="https://SEU-DOMINIO/aulas/o-caminho-completo.html">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="O caminho completo de um vídeo">
+<meta property="og:description" content="As 7 etapas de um vídeo animado &quot;E se...&quot;: roteiro, narração com IA, tempos com faster-whisper, animação em p5.js, legendas, mixagem e encode. Com tempos e custos reais.">
+<meta property="og:url" content="https://SEU-DOMINIO/aulas/o-caminho-completo.html">
+<meta property="og:image" content="https://SEU-DOMINIO/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lilita+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"LearningResource","name":"O caminho completo de um vídeo","description":"As 7 etapas de um vídeo animado \"E se...\": roteiro, narração com IA, tempos com faster-whisper, animação em p5.js, legendas, mixagem e encode. Com tempos e custos reais.","inLanguage":"pt-BR","url":"https://SEU-DOMINIO/aulas/o-caminho-completo.html","timeRequired":"PT6M","isPartOf":{"@id":"https://SEU-DOMINIO/#curso"},"learningResourceType":"Aula","isAccessibleForFree":true},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Curso E se...","item":"https://SEU-DOMINIO/"},{"@type":"ListItem","position":2,"name":"O caminho completo de um vídeo","item":"https://SEU-DOMINIO/aulas/o-caminho-completo.html"}]}]}</script>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="marca" href="../index.html">E se<span>...</span></a>
+    <a href="../index.html#grade" class="nav-opcional">Todas as aulas</a>
+    <a class="btn pequeno nav-cta" href="../comprar.html">Comprar</a>
+  </div>
+</header>
+<main class="pagina">
+  <div class="wrap" style="max-width:820px">
+    <nav class="migalhas" aria-label="Você está em"><a href="../index.html">Curso E se...</a> <span aria-hidden="true">/</span> Aula grátis</nav>
+    <article class="aula">
+      <p class="ajuda">Aula grátis, 6 min de leitura</p>
+      <h1 style="font-size:clamp(2rem,5vw,3rem)">O caminho completo de um vídeo</h1>
+      <p>Todo vídeo do canal passa pelas mesmas sete etapas, sempre nesta ordem. Cada etapa gera um arquivo que a próxima usa, então dá para refazer só um pedaço sem perder o resto.</p>
+<table>
+<thead>
+<tr>
+<th>Etapa</th>
+<th>Ferramenta</th>
+<th>Arquivo que sai</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. Roteiro</td>
+<td>Você + Claude</td>
+<td><code>roteiro.txt</code></td>
+</tr>
+<tr>
+<td>2. Narração</td>
+<td>ElevenLabs + ffmpeg</td>
+<td><code>voz.wav</code></td>
+</tr>
+<tr>
+<td>3. Tempos</td>
+<td>faster-whisper</td>
+<td><code>tempos.json</code></td>
+</tr>
+<tr>
+<td>4. Animação</td>
+<td>Claude Animation Base (p5.js + p5.brush)</td>
+<td><code>frames/00001.png …</code></td>
+</tr>
+<tr>
+<td>5. Legendas</td>
+<td>script Python</td>
+<td><code>legendas.ass</code></td>
+</tr>
+<tr>
+<td>6. Áudio</td>
+<td>ffmpeg</td>
+<td><code>mix.wav</code></td>
+</tr>
+<tr>
+<td>7. Final</td>
+<td>ffmpeg + kit</td>
+<td><code>final.mp4</code>, <code>thumb.png</code></td>
+</tr>
+</tbody></table>
+<h2>Por que essa ordem</h2>
+<p>A narração vem <strong>antes</strong> da animação. Parece ao contrário, mas é o que deixa o vídeo sincronizado sem esforço: primeiro você tem a voz, depois descobre em que segundo cada frase acontece, e só então programa as cenas para entrar nesses segundos. Ninguém arrasta nada numa linha do tempo de editor.</p>
+<h2>Quanto tempo leva</h2>
+<ul>
+<li><strong>Short (~55 s):</strong> cerca de 700 quadros a 12 fps. Renderiza em uns 15 minutos.</li>
+<li><strong>Vídeo longo (8 a 11 min):</strong> 6.000 a 8.000 quadros. Renderiza em 40 a 60 minutos.</li>
+</ul>
+<p>O render roda sozinho. O tempo que você gasta de verdade é no roteiro e na revisão das cenas.</p>
+<aside class="cta-aula">
+  <p class="display">Gostou? Tem muito mais.</p>
+  <p>Este é um pedaço grátis do curso. O curso completo tem 16 aulas, 5 skills do Claude, 100 ideias de vídeo e todos os scripts prontos.</p>
+  <a class="btn" href="../comprar.html">Quero o curso por R$ 47</a>
+</aside>
+<h2>Quanto custa</h2>
+<p>A única parte paga por uso é a narração: cerca de 1 crédito do ElevenLabs por caractere. Um vídeo de 8 minutos tem uns 7 mil caracteres. O resto (p5.js, ffmpeg, faster-whisper, Chromium) é gratuito e open source.</p>
+<h2>Organização de pastas</h2>
+<p>Crie uma pasta por vídeo e mantenha sempre os mesmos nomes. Os scripts do curso assumem esta estrutura:</p>
+<pre><code>videos/
+  e-se-ilha-100-anos/
+    roteiro.txt
+    voz_original.mp3
+    voz.wav
+    tempos.json
+    cenas/
+    frames/
+    legendas.ass
+    trilha.wav
+    mix.wav
+    final.mp4
+    thumb.png
+</code></pre>
+
+      <aside class="cta-aula">
+  <p class="display">Faça o seu primeiro vídeo "E se..."</p>
+  <p>Este é um pedaço grátis do curso. O curso completo tem 16 aulas, 5 skills do Claude, 100 ideias de vídeo e todos os scripts prontos.</p>
+  <a class="btn" href="../comprar.html">Quero o curso por R$ 47</a>
+</aside>
+    </article>
+  </div>
+</main>
+<footer><div class="wrap"><p>Curso independente de vídeos animados com código. <a href="../index.html">Conheça o curso completo</a>.</p></div></footer>
+</body>
+</html>

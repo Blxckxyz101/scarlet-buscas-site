@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /aluno.html
+Disallow: /aula.html
+Disallow: /comprar.html
+Disallow: /entrar.html
+Disallow: /senha.html
+Disallow: /render.html
+
+Sitemap: https://SEU-DOMINIO/sitemap.xml

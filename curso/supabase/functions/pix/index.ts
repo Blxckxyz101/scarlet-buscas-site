@@ -1,4 +1,5 @@
 // Edge Function "pix": cria e confere cobranças Pix no promstgateway e libera a matrícula.
+// POST { action: "cadastro", email, password } -> { ok }   (sem login)
 // POST { action: "create" }               -> { txid, pixCopiaECola, qrcode_base64, amount }
 // POST { action: "status", txid: "..." }  -> { status, enrolled }
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
@@ -39,12 +40,28 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return json({ error: "Use POST." }, 405);
 
+  let body: any = {};
+  try { body = await req.json(); } catch { /* corpo vazio */ }
+
+  // Cadastro no próprio checkout: cria a conta já confirmada, para o comprador ir direto ao Pix
+  // (o e-mail de confirmação do Supabase atrasaria a compra e tem limite de envio por hora).
+  if (body.action === "cadastro") {
+    const email = String(body.email ?? "").trim().toLowerCase();
+    const password = String(body.password ?? "");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 200) return json({ error: "Digite um e-mail válido." }, 400);
+    if (password.length < 6 || password.length > 72) return json({ error: "A senha precisa ter pelo menos 6 caracteres." }, 400);
+    const { error } = await admin.auth.admin.createUser({ email, password, email_confirm: true });
+    if (error) {
+      if (/already|registered|exists/i.test(error.message)) return json({ error: "Este e-mail já tem conta. Confira a senha ou use Esqueci minha senha.", existe: true }, 409);
+      console.error(error);
+      return json({ error: "Não foi possível criar a conta agora. Tente de novo em alguns segundos." }, 500);
+    }
+    return json({ ok: true });
+  }
+
   const token = (req.headers.get("Authorization") ?? "").replace(/^Bearer\s+/i, "");
   const { data: { user } } = await admin.auth.getUser(token);
   if (!user) return json({ error: "Entre na sua conta para comprar." }, 401);
-
-  let body: any = {};
-  try { body = await req.json(); } catch { /* corpo vazio */ }
 
   const { data: enrolled } = await admin.from("enrollments").select("user_id").eq("user_id", user.id).maybeSingle();
 

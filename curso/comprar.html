@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lilita+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css">
-<title>Comprar — E se...</title>
+<title>Comprar o curso E se... — R$ 47 no Pix</title>
 <meta name="robots" content="noindex">
 </head>
 <body>
@@ -20,48 +20,130 @@
   </div>
 </header>
 <main class="pagina">
-  <div class="wrap" style="max-width:860px">
+  <div class="wrap checkout">
+    <aside class="resumo-pedido" aria-labelledby="resumo-t">
+      <h1 id="resumo-t" class="contorno">Você está levando</h1>
+      <ul class="levando">
+        <li><strong>Curso completo</strong><span>16 aulas, do roteiro à publicação</span></li>
+        <li><strong>Bônus: pacote de 5 skills do Claude</strong><span>roteiro, cenas, legendas, mixagem e publicação com um comando</span></li>
+        <li><strong>Bônus: 100 ideias de "E se..."</strong><span>separadas por tema, prontas para virar vídeo</span></li>
+        <li><strong>Bônus: modelos de publicação</strong><span>títulos, descrição com capítulos e comentário fixado</span></li>
+        <li><strong>Scripts e comandos prontos</strong><span>Python e ffmpeg para copiar e colar</span></li>
+      </ul>
+      <div class="total"><span>Total</span><strong>R$ 47,00</strong></div>
+      <p class="ajuda">Pagamento único no Pix. Sem mensalidade.</p>
+    </aside>
+
     <div class="cartao">
-      <h1 style="font-size:2.2rem">Pagar com Pix</h1>
-      <p id="quem" class="ajuda" style="margin-top:-8px"></p>
       <div id="msg" role="status" aria-live="polite"></div>
 
-      <div id="passo-gerar">
-        <p>Curso completo, 16 aulas. Pagamento único de <strong>R$ 47,00</strong>. O acesso abre nesta mesma página assim que o banco confirmar o Pix.</p>
-        <button class="btn" id="gerar" type="button">Gerar Pix de R$ 47</button>
+      <form id="passo-conta" novalidate>
+        <h2 class="passo-t">Seu acesso</h2>
+        <p class="ajuda" style="margin:-6px 0 18px">É com este e-mail e senha que você entra na área do aluno.</p>
+        <div class="campo">
+          <label for="email">E-mail</label>
+          <input id="email" type="email" autocomplete="email" inputmode="email" required>
+        </div>
+        <div class="campo">
+          <label for="senha">Crie uma senha</label>
+          <input id="senha" type="password" autocomplete="new-password" minlength="6" required>
+          <p class="ajuda">Pelo menos 6 caracteres. Já tem conta? Use a mesma senha.</p>
+        </div>
+        <button class="btn largo" id="gerar" type="submit">Gerar Pix de R$ 47</button>
+      </form>
+
+      <div id="passo-logado" hidden>
+        <h2 class="passo-t">Pagar com Pix</h2>
+        <p id="quem" class="ajuda"></p>
+        <button class="btn largo" id="gerar-logado" type="button">Gerar Pix de R$ 47</button>
       </div>
 
-      <div id="passo-pagar" class="pix" hidden>
-        <img id="qr" class="qr" alt="QR Code do Pix">
-        <div>
-          <h2 style="font-size:1.5rem">Escaneie o QR Code ou copie o código</h2>
-          <ol style="padding-left:1.2em;margin:0 0 18px">
-            <li>Abra o app do seu banco e escolha Pix.</li>
-            <li>Escaneie o QR Code ou use "Pix copia e cola".</li>
-            <li>Confirme o pagamento de <strong id="valor">R$ 47,00</strong>.</li>
-          </ol>
-          <label for="codigo">Pix copia e cola</label>
-          <div class="copia">
-            <input id="codigo" type="text" readonly>
-            <button class="btn pequeno" id="copiar" type="button">Copiar</button>
+      <div id="passo-pagar" hidden>
+        <h2 class="passo-t">Pague com o app do seu banco</h2>
+        <div class="pix">
+          <img id="qr" class="qr" alt="QR Code do Pix de R$ 47">
+          <div>
+            <ol style="padding-left:1.2em;margin:0 0 18px">
+              <li>Abra o app do banco e escolha Pix.</li>
+              <li>Escaneie o QR Code ou use "Pix copia e cola".</li>
+              <li>Confirme <strong id="valor">R$ 47,00</strong>.</li>
+            </ol>
+            <label for="codigo">Pix copia e cola</label>
+            <div class="copia">
+              <input id="codigo" type="text" readonly>
+              <button class="btn pequeno" id="copiar" type="button">Copiar</button>
+            </div>
           </div>
-          <p class="status"><span class="ponto" aria-hidden="true"></span><span id="status-texto">Aguardando o pagamento…</span></p>
-          <p class="ajuda">Já pagou e nada mudou? <a href="#" id="conferir">Conferir agora</a></p>
         </div>
+        <p class="status"><span class="ponto" aria-hidden="true"></span><span id="status-texto">Aguardando o pagamento. Esta página abre o curso sozinha quando o Pix for confirmado.</span></p>
+        <p class="ajuda">Já pagou e nada mudou? <a href="#" id="conferir">Conferir agora</a></p>
       </div>
+
+      <ul class="confianca">
+        <li>Acesso liberado automaticamente após o Pix</li>
+        <li>Pagamento pelo app do seu próprio banco</li>
+        <li>Nenhum dado de cartão é pedido</li>
+      </ul>
     </div>
   </div>
 </main>
 <script type="module">
-  import { requireUser, isEnrolled, callPix, wireNav } from "./js/app.js";
+  import { sb, getUser, isEnrolled, callPix, wireNav } from "./js/app.js";
   wireNav();
   const $ = (id) => document.getElementById(id);
-  const user = await requireUser();
-  $("quem").textContent = "Conta: " + user.email;
-  if (await isEnrolled(user)) location.replace("aluno.html");
-
   const aviso = (t, tipo = "erro") => { $("msg").innerHTML = t ? `<p class="aviso ${tipo}"></p>` : ""; if (t) $("msg").firstChild.textContent = t; };
   let txid = null, timer = null, inicio = 0;
+
+  let user = await getUser();
+  if (user) {
+    if (await isEnrolled(user)) location.replace("aluno.html");
+    $("passo-conta").hidden = true; $("passo-logado").hidden = false;
+    $("quem").textContent = "Conta: " + user.email;
+  }
+
+  async function gerarPix(botao) {
+    botao.disabled = true; botao.textContent = "Gerando o Pix…";
+    try {
+      const r = await callPix({ action: "create" });
+      if (r.enrolled) return location.replace("aluno.html");
+      txid = r.txid;
+      $("codigo").value = r.pixCopiaECola;
+      if (r.qrcode_base64) $("qr").src = r.qrcode_base64.startsWith("data:") ? r.qrcode_base64 : "data:image/png;base64," + r.qrcode_base64;
+      else $("qr").hidden = true;
+      $("valor").textContent = Number(r.amount).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      $("passo-conta").hidden = true; $("passo-logado").hidden = true; $("passo-pagar").hidden = false;
+      aviso("");
+      inicio = Date.now();
+      timer = setInterval(conferir, 5000);
+      $("passo-pagar").scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (e) { aviso(e.message); }
+    finally { botao.disabled = false; botao.textContent = "Gerar Pix de R$ 47"; }
+  }
+
+  $("passo-conta").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const email = $("email").value.trim().toLowerCase(), password = $("senha").value;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return aviso("Digite um e-mail válido, como nome@gmail.com.");
+    if (password.length < 6) return aviso("A senha precisa ter pelo menos 6 caracteres.");
+    const b = $("gerar"); b.disabled = true; b.textContent = "Criando seu acesso…";
+    try {
+      let { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) {
+        const { data, error: e2 } = await sb.functions.invoke("pix", { body: { action: "cadastro", email, password } });
+        if (e2) {
+          let msg = "Não foi possível criar a conta agora.";
+          try { const j = await e2.context.json(); if (j?.error) msg = j.error; } catch {}
+          throw new Error(msg);
+        }
+        ({ error } = await sb.auth.signInWithPassword({ email, password }));
+        if (error) throw new Error("Conta criada, mas não deu para entrar. Tente de novo.");
+      }
+      user = await getUser();
+      if (await isEnrolled(user)) return location.replace("aluno.html");
+      await gerarPix(b);
+    } catch (e) { aviso(e.message); b.disabled = false; b.textContent = "Gerar Pix de R$ 47"; }
+  });
+  $("gerar-logado").addEventListener("click", (e) => gerarPix(e.currentTarget));
 
   async function conferir(manual = false) {
     if (!txid) return;
@@ -76,34 +158,18 @@
       }
       if (["EXPIRADA", "CANCELADA", "REMOVIDA_PELO_USUARIO_RECEBEDOR", "REMOVIDA_PELO_PSP"].includes(r.status)) {
         clearInterval(timer);
-        $("passo-pagar").hidden = true; $("passo-gerar").hidden = false;
+        $("passo-pagar").hidden = true; $("passo-logado").hidden = false;
+        $("quem").textContent = "Conta: " + (user?.email || "");
         aviso("Este Pix expirou. Gere um novo para continuar.");
         return;
       }
-      if (manual) aviso("Ainda não recebemos a confirmação do banco. Isso costuma levar alguns segundos depois do pagamento.", "ok");
+      if (manual) aviso("O banco ainda não confirmou. Isso costuma levar alguns segundos depois do pagamento.", "ok");
     } catch (e) { if (manual) aviso(e.message); }
     if (Date.now() - inicio > 30 * 60_000) {
       clearInterval(timer);
-      $("status-texto").textContent = "Paramos de conferir sozinhos. Clique em Conferir agora depois de pagar.";
+      $("status-texto").textContent = "Paramos de conferir sozinhos. Depois de pagar, clique em Conferir agora.";
     }
   }
-
-  $("gerar").addEventListener("click", async () => {
-    $("gerar").disabled = true; aviso("");
-    try {
-      const r = await callPix({ action: "create" });
-      if (r.enrolled) return location.replace("aluno.html");
-      txid = r.txid;
-      $("codigo").value = r.pixCopiaECola;
-      if (r.qrcode_base64) $("qr").src = r.qrcode_base64.startsWith("data:") ? r.qrcode_base64 : "data:image/png;base64," + r.qrcode_base64;
-      else $("qr").hidden = true;
-      $("valor").textContent = Number(r.amount).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-      $("passo-gerar").hidden = true; $("passo-pagar").hidden = false;
-      inicio = Date.now();
-      timer = setInterval(conferir, 5000);
-    } catch (e) { aviso(e.message); }
-    finally { $("gerar").disabled = false; }
-  });
 
   $("copiar").addEventListener("click", async () => {
     $("codigo").select();
