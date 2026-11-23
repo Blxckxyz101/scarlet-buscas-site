@@ -5,12 +5,12 @@ await document.fonts.load('100px CapB');
 import * as THREE from 'three';
 import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
-import {r15,randomNPC,NICO} from './kit.js';
+import {r15,randomNPC,NICO,NHACUDO} from './kit.js';const HERO=new URLSearchParams(location.search).get('hero')==='nico'?NICO:NHACUDO;
 const q=new URLSearchParams(location.search);const W=+q.get('w')||1920,H=+q.get('h')||1080,mode=q.get('m')||'cast';
 const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setSize(W,H);renderer.toneMapping=THREE.ACESFilmicToneMapping;
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;document.body.appendChild(renderer.domElement);
-const scene=new THREE.Scene();scene.background=new THREE.Color(mode==='nico'?0x6b3fd6:0xe9e4f7);
-const floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:mode!=='nico'?0xf2eefb:0x5a33bf,roughness:.9}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
+const scene=new THREE.Scene();scene.background=new THREE.Color(mode==='nico'||mode==='pfp'?0xffd23f:0xe9e4f7);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:mode!=='nico'&&mode!=='pfp'?0xf2eefb:0xf2b81f,roughness:.9}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
 const wall=new THREE.Mesh(new THREE.PlaneGeometry(200,60),floor.material);wall.position.set(0,30,-6);wall.receiveShadow=true;scene.add(wall);
 scene.add(new THREE.HemisphereLight(0xffffff,0xb8a8e0,1.6));const key=new THREE.DirectionalLight(0xfff4e6,2.6);key.position.set(-8,14,14);key.castShadow=true;key.shadow.mapSize.set(4096,4096);
 Object.assign(key.shadow.camera,{left:-30,right:30,top:20,bottom:-5,far:80});key.shadow.radius=5;key.shadow.bias=-.0003;scene.add(key);const rim=new THREE.DirectionalLight(0xc8b8ff,1.2);rim.position.set(10,8,-8);scene.add(rim);
@@ -18,13 +18,14 @@ const cam=window.cam=new THREE.PerspectiveCamera(mode==='cast'?24:30,W/H,.1,300)
 const exprs=['grin','happy','smug','shock','laugh','nervous','talk','angry','cry','grin'];
 if(mode==='cast'){for(let i=0;i<12;i++){const c=randomNPC(scene,i+31);c.root.position.set(-17.6+(i%6)*7+(i>5?3.5:0),0,i>5?-4:0);c.root.rotation.y=(Math.random()-.5)*.3;c.face(exprs[i%10]);
     c.pose({lsz:-.08,rsz:.08,ny:(i%3-1)*.15})}
-  const n=r15(scene,NICO);n.root.position.set(0,0,3.2);n.face('grin');n.pose({rsz:2.5,rex:-.4,lsz:-.1});n.root.scale.setScalar(1.12);
+  const n=r15(scene,HERO);n.root.position.set(0,0,3.2);n.face('grin');n.pose({rsz:2.5,rex:-.4,lsz:-.1});n.root.scale.setScalar(1.12);
   cam.position.set(0,8,44);cam.lookAt(0,3.6,0)}
 else if(mode==='heads'){const st=['swoop','messy','long','bob','ponytail','buns','afro','curly','mohawk','buzz'];st.forEach((h,i)=>{const c=randomNPC(scene,i+20,{hair:h,glasses:0,headphones:0,cap:0});c.root.position.set(-15.75+i*3.5,0,0);c.face(exprs[i]);c.pose({})});cam.fov=+(q.get('fov')||11);cam.updateProjectionMatrix();cam.position.set(+(q.get('cx')||0),6.4,90);cam.lookAt(+(q.get('cx')||0),5.1,0)}
-else if(mode==='expr'){const ex=['grin','happy','shock','nervous','laugh','angry','cry','smug'];ex.forEach((e,i)=>{const c=r15(scene,NICO);c.root.position.set(-12.25+i*3.5,0,0);c.face(e);c.pose({ny:(i%2?.15:-.15)});if(e==='cry'||e==='nervous'){const q=c.quiff.children[0];q.rotation.z=-1.25;q.position.x=.35;q.position.y=1.22}if(e==='shock'||e==='laugh')c.quiff.userData.mat.emissiveIntensity=1.2});
-  cam.fov=5.2;cam.updateProjectionMatrix();cam.position.set(0,6.6,130);cam.lookAt(0,5.6,0)}
-else{const a=r15(scene,NICO);a.root.position.set(-2.2,0,0);a.face('grin');a.pose({rsz:2.6,rex:-.3});const b=r15(scene,NICO);b.root.position.set(2.4,0,0);b.root.rotation.y=-.75;b.face('happy');b.pose({lsx:-.3,rsx:.3});
-  cam.position.set(0,4.6,17);cam.lookAt(0,3.4,0);const c3=r15(scene,NICO);c3.root.position.set(6.5,0,-1);c3.root.rotation.y=Math.PI*.85;c3.pose({});c3.root.visible=!!q.get('back');if(q.get('back')){a.root.position.x=-4.6;b.root.position.x=.4;b.root.rotation.y=-.6;c3.root.position.set(5,0,0);c3.root.rotation.y=Math.PI;cam.position.set(0,4.6,21);cam.lookAt(0,3.4,0)}cam.updateProjectionMatrix()}
+else if(mode==='pfp'){const a=r15(scene,HERO);a.face('grin');a.pose({rsz:2.4,rex:-.5,ny:.12,nz:-.08});cam.fov=26;cam.updateProjectionMatrix();cam.position.set(.4,5.9,14.5);cam.lookAt(.4,4.95,0)}
+else if(mode==='expr'){const ex=['grin','happy','shock','nervous','laugh','angry','cry','smug'];ex.forEach((e,i)=>{const c=r15(scene,HERO);c.root.position.set(-12.25+i*3.5,0,0);c.face(e);c.pose({ny:(i%2?.15:-.15)});});
+  cam.fov=2.6;cam.updateProjectionMatrix();cam.position.set(0,6.6,130);cam.lookAt(0,5.75,0)}
+else{const a=r15(scene,HERO);a.root.position.set(-2.2,0,0);a.face('grin');a.pose({rsz:2.6,rex:-.3});const b=r15(scene,HERO);b.root.position.set(2.4,0,0);b.root.rotation.y=-.75;b.face('happy');b.pose({lsx:-.3,rsx:.3});
+  cam.position.set(0,4.6,17);cam.lookAt(0,3.4,0);const c3=r15(scene,HERO);c3.root.position.set(6.5,0,-1);c3.root.rotation.y=Math.PI*.85;c3.pose({});c3.root.visible=!!q.get('back');if(q.get('back')){a.root.position.x=-4.6;b.root.position.x=.4;b.root.rotation.y=-.6;c3.root.position.set(5,0,0);c3.root.rotation.y=Math.PI;cam.position.set(0,4.6,21);cam.lookAt(0,3.4,0)}cam.updateProjectionMatrix()}
 const comp=new EffectComposer(renderer);comp.addPass(new RenderPass(scene,cam));const ao=new GTAOPass(scene,cam,W,H);ao.updateGtaoMaterial({radius:.5,scale:1});comp.addPass(ao);comp.addPass(new OutputPass());
 window.renderAt=()=>comp.render();window.ready=true;
 </script></body></html>

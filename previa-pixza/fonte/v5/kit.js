@@ -129,6 +129,32 @@ function headphones(col){const g=new THREE.Group();const m=plastic(col,.35);cons
 function glasses(col){const g=new THREE.Group();const m=plastic(col,.3);[-.3,.3].forEach(x=>{const r=new THREE.Mesh(new THREE.TorusGeometry(.2,.04,8,22),m);r.position.set(x,.74,.66);g.add(r)});
   const b=new THREE.Mesh(new THREE.BoxGeometry(.2,.04,.04),m);b.position.set(0,.76,.66);g.add(b);return g}
 
+
+// ---------- shark hood (Nhacudo) ----------
+export function sharkHood(col=0x18b4ea){const g=new THREE.Group();const m=fabric(col,{rough:.8});const wm=plastic(0xfbfbf8,.35);const dk=plastic(0x0e1a2a,.3);
+  const add=(o,x,y,z)=>{o.position.set(x,y,z);o.castShadow=true;g.add(o);return o};
+  add(new THREE.Mesh(new RoundedBoxGeometry(1.7,.62,1.66,5,.3),m),0,1.42,-.04);
+  add(new THREE.Mesh(new RoundedBoxGeometry(1.7,1.5,.5,5,.24),m),0,.76,-.62);
+  [-1,1].forEach(s=>add(new THREE.Mesh(new RoundedBoxGeometry(.24,1.42,1.5,3,.11),m),s*.78,.76,-.02));
+  add(new THREE.Mesh(new RoundedBoxGeometry(1.66,.3,.34,4,.14),m),0,1.27,.62);
+  add(new THREE.Mesh(new RoundedBoxGeometry(1.66,.26,.4,4,.12),m),0,.02,.55);
+  // teeth (one missing!)
+  const tooth=new THREE.ConeGeometry(.085,.2,4);
+  for(let i=0;i<9;i++){if(i===5)continue;const t=new THREE.Mesh(tooth,wm);t.rotation.x=Math.PI;t.position.set(-.56+i*.14,1.12,.76);t.scale.set(1,.8,1);g.add(t)}
+  for(let i=0;i<8;i++){const t=new THREE.Mesh(tooth,wm);t.position.set(-.49+i*.14,.16,.73);t.scale.set(1,.7,1);g.add(t)}
+  // fin
+  const fs=new THREE.Shape();fs.moveTo(-.45,0);fs.quadraticCurveTo(-.2,.25,.05,.85);fs.quadraticCurveTo(.12,.4,.4,0);fs.lineTo(-.45,0);
+  const fg=new THREE.ExtrudeGeometry(fs,{depth:.26,bevelEnabled:true,bevelSize:.05,bevelThickness:.05,bevelSegments:3});fg.translate(0,0,-.08);
+  const fin=new THREE.Mesh(fg,m);fin.rotation.y=Math.PI/2-.62;fin.rotation.z=.12;fin.scale.set(1.35,1.15,1.1);fin.position.set(.05,1.66,-.1);fin.castShadow=true;g.add(fin);
+  // hood eyes
+  [-1,1].forEach(s=>{const e=new THREE.Mesh(new THREE.SphereGeometry(.11,16,12),dk);e.position.set(s*.86,1.2,.36);g.add(e);const h=new THREE.Mesh(new THREE.SphereGeometry(.035,8,6),wm);h.position.set(s*.93,1.24,.42);g.add(h);
+    const gl=decal(.6,.5,(c,w,h)=>{c.strokeStyle='rgba(8,40,70,.55)';c.lineWidth=14;c.lineCap='round';for(let i=0;i<3;i++){c.beginPath();c.moveTo(w*(.25+i*.22),h*.15);c.quadraticCurveTo(w*(.18+i*.22),h*.5,w*(.25+i*.22),h*.85);c.stroke()}},256,220);
+    gl.position.set(s*.905,.72,-.05);gl.rotation.y=s*Math.PI/2;g.add(gl)});
+  return g}
+export function sharkTail(col=0x18b4ea){const g=new THREE.Group();const m=fabric(col);const t=new THREE.Mesh(new THREE.ConeGeometry(.32,1.1,10),m);t.rotation.x=-Math.PI/2+.35;t.position.set(0,.5,-1.0);t.scale.set(1.1,1.2,1.1);t.castShadow=true;g.add(t);
+  const fs=new THREE.Shape();fs.moveTo(0,0);fs.lineTo(.45,.45);fs.lineTo(.2,0);fs.lineTo(.45,-.4);fs.closePath();const fg=new THREE.ExtrudeGeometry(fs,{depth:.1,bevelEnabled:true,bevelSize:.03,bevelThickness:.03});
+  const f=new THREE.Mesh(fg,m);f.rotation.set(0,Math.PI/2,0);f.scale.setScalar(1.5);f.position.set(-.08,.72,-1.6);g.add(f);return g}
+
 // ---------- character ----------
 export function r15(scene,o={}){
   const root=new THREE.Group(),hip=new THREE.Group();root.add(hip);hip.position.y=2;
@@ -141,9 +167,10 @@ export function r15(scene,o={}){
       c.strokeStyle='rgba(0,0,0,.18)';c.lineWidth=5;c.strokeRect(w*.62,h*.5,w*.24,h*.22);c.beginPath();c.moveTo(w*.62,h*.56);c.lineTo(w*.86,h*.56);c.stroke();
       c.fillStyle='#f0f0ee';c.beginPath();c.moveTo(w*.33,0);c.lineTo(w/2,h*.3);c.lineTo(w*.67,0);c.fill();c.fillStyle='rgba(0,0,0,.12)';c.fillRect(0,0,w,8)},512,410);d.position.set(0,.8,.505);waist.add(d)}
   if(o.patch){const p=decal(.62,.38,(c,w,h)=>{c.fillStyle='#ededea';c.fillRect(0,0,w,h);c.strokeStyle='#2a2a2a';c.lineWidth=10;c.strokeRect(5,5,w-10,h-10);c.fillStyle='#1d1d1d';c.font='118px CapB';c.textAlign='center';c.textBaseline='middle';c.fillText(o.patch,w/2,h/2+6)},320,196);p.position.set(-.5,1.0,.51);waist.add(p)}
-  if(o.hoodie){const hd=cbox(1.7,.7,.55,top,.22,1.5);hd.position.z=-.55;hd.rotation.x=-.3;waist.add(hd);
+  if(o.hoodie){if(!o.shark){const hd=cbox(1.7,.7,.55,top,.22,1.5);hd.position.z=-.55;hd.rotation.x=-.3;waist.add(hd)}
     [-.32,.32].forEach(x=>{const sm=plastic(o.strings??0xffffff,.5);const s=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,.62,6),sm);s.position.set(x,1.25,.53);waist.add(s);const tip=cbox(.09,.12,.09,sm,.02,0);tip.position.set(x,.92,.53);waist.add(tip)});
     const pk=decal(1.4,.6,(c,w,h)=>{c.strokeStyle='rgba(0,0,0,.25)';c.lineWidth=7;c.beginPath();c.moveTo(w*.1,h*.95);c.lineTo(w*.2,h*.1);c.lineTo(w*.8,h*.1);c.lineTo(w*.9,h*.95);c.stroke()},400,170);pk.position.set(0,.33,.506);waist.add(pk)}
+  if(o.belly){const bl=decal(1.5,1.3,(c,w,h)=>{c.fillStyle='#fbfbf8';c.beginPath();c.roundRect(w*.08,h*.06,w*.84,h*.9,w*.3);c.fill()},400,350);bl.position.set(0,.72,.506);waist.add(bl);const tl=sharkTail(o.shirt);waist.add(tl)}
   if(o.logo){const lg=decal(.75,.75,o.logo);lg.position.set(0,.98,.507);waist.add(lg)}
   if(o.vest){const v=decal(2,1.6,(c,w,h)=>{c.fillStyle=hex(o.vest);c.beginPath();c.moveTo(0,0);c.lineTo(w*.3,0);c.lineTo(w/2,h*.45);c.lineTo(w*.7,0);c.lineTo(w,0);c.lineTo(w,h);c.lineTo(0,h);c.fill();
       c.strokeStyle='rgba(255,255,255,.35)';c.lineWidth=8;c.beginPath();for(let i=-6;i<12;i++){c.moveTo(i*60,h);c.lineTo(i*60+h,0)}c.stroke()},512,410);v.position.set(0,.8,.506);waist.add(v)}
@@ -160,7 +187,8 @@ export function r15(scene,o={}){
   const hm=new THREE.Mesh(GC.head||(GC.head=new RoundedBoxGeometry(1.3,1.25,1.25,4,.3)),skin);hm.position.y=.66;hm.castShadow=hm.receiveShadow=true;head.add(hm);
   const fm=new THREE.MeshStandardMaterial({map:face('grin'),transparent:true,roughness:.6,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2});
   const fp=new THREE.Mesh(new THREE.PlaneGeometry(1.3,1.3),fm);fp.position.set(0,.6,.632);head.add(fp);
-  if(o.hair)head.add(hair(o.hair,o.hairCol??0x2b1d14));let quiff=null;if(o.quiff){quiff=boltQuiff(o.quiff);head.add(quiff)}
+  if(o.hair)head.add(hair(o.hair,o.hairCol??0x2b1d14));
+  if(o.shark)head.add(sharkHood(o.shark));let quiff=null;if(o.quiff){quiff=boltQuiff(o.quiff);head.add(quiff)}
   if(o.bandaid){const b=decal(.36,.16,(c,w,h)=>{c.fillStyle='#f3c9a0';c.beginPath();c.roundRect(2,2,w-4,h-4,h/2);c.fill();c.fillStyle='#e6b48a';c.fillRect(w*.38,6,w*.24,h-12);c.fillStyle='rgba(0,0,0,.15)';for(let i=0;i<4;i++)for(let j=0;j<2;j++){c.beginPath();c.arc(w*.43+i*10,h*.38+j*16,2.5,0,7);c.fill()}},160,72);b.position.set(.36,.5,.645);b.rotation.z=.5;head.add(b)}
   if(o.beanie)head.add(beanie(o.beanie,o.pom,o.letter));if(o.cap)head.add(cap(o.cap,o.capBack));
   if(o.headphones)head.add(headphones(o.headphones));if(o.glasses)head.add(glasses(o.glasses));
@@ -188,6 +216,7 @@ export function r15(scene,o={}){
 
 // ---------- mascot + random NPCs ----------
 export const BOLT=(c,w,h)=>{c.fillStyle='#ffc400';c.beginPath();const pts=[[.6,.04],[.28,.56],[.5,.56],[.4,.96],[.74,.42],[.52,.42]];c.moveTo(pts[0][0]*w,pts[0][1]*h);pts.forEach(p=>c.lineTo(p[0]*w,p[1]*h));c.closePath();c.fill();c.lineWidth=16;c.strokeStyle='#2a1660';c.stroke()};
+export const NHACUDO={skin:0xf0c49c,shirt:0x18b4ea,hoodie:1,strings:0xfbfbf8,belly:1,pants:0x1f2a4a,shoe:0xff3b3b,sole:0xffffff,shark:0x18b4ea,bandaid:1};
 export const NICO={skin:0xe9b48a,shirt:0x6b3fd6,sleeveCol:0xf4ead8,pants:0x2f4a78,rollCuff:0x5a78a8,shoe:0xffffff,sole:0xffc400,ribCuff:0xffc400,
   hair:'quiff',hairCol:0x2a1a12,quiff:0xffc400,bandaid:1,
   jacket:{tee:0xf8f8f4,rib:0xffc400,rib2:0x6b3fd6,teeLogo:BOLT,patch:(c,w,h)=>{c.fillStyle='#ffc400';c.beginPath();c.arc(w/2,h/2,w*.48,0,7);c.fill();c.fillStyle='#6b3fd6';c.font=`${w*.8}px CapB`;c.textAlign='center';c.textBaseline='middle';c.fillText('N',w/2,h/2+w*.06)},
