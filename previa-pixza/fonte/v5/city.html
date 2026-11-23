@@ -1,0 +1,71 @@
+<!doctype html><html><head><meta charset="utf-8"><style>@font-face{font-family:Cap;src:url(font.otf)}@font-face{font-family:CapB;src:url(fontb.otf)}html,body{margin:0;overflow:hidden;background:#000}canvas{display:block}</style></head><body>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+await document.fonts.load('100px CapB');
+import * as THREE from 'three';
+import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';import {SSAOPass} from 'three/addons/postprocessing/SSAOPass.js';import {BokehPass} from 'three/addons/postprocessing/BokehPass.js';
+import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+import * as C from './city.js';import {r15,randomNPC,NHACUDO} from './kit.js';
+const q=new URLSearchParams(location.search);const W=+q.get('w')||720,H=+q.get('h')||1280,shot=q.get('shot')||'wide',tod=q.get('tod')||'day',PR=+(q.get('pr')||1);
+const night=tod==='night';
+const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(PR);renderer.setSize(W,H);renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=night?1.0:1.12;
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;document.body.appendChild(renderer.domElement);
+const scene=new THREE.Scene();C.mats();C.cseed(7);
+const SKY={day:['#3a9ef0','#8fd0fb','#e4f5ff'],sunset:['#3b3f8f','#f08a6a','#ffd59a'],night:['#050b24','#14245a','#2a3a78']}[tod];
+scene.background=C.skyTex(...SKY);scene.fog=new THREE.Fog(new THREE.Color(SKY[2]),140,420);
+const hemi=new THREE.HemisphereLight(night?0x5068b0:(tod==='sunset'?0xffc8a8:0xdff0ff),night?0x101830:0x9cc77a,night?.55:1.35);scene.add(hemi);
+const sun=new THREE.DirectionalLight(night?0x9fb4ff:(tod==='sunset'?0xffa060:0xfff1dc),night?.6:(tod==='sunset'?2.4:2.6));sun.castShadow=true;sun.shadow.mapSize.set(4096,4096);sun.shadow.bias=-.0002;sun.shadow.normalBias=.03;sun.shadow.radius=4;
+Object.assign(sun.shadow.camera,{left:-60,right:60,top:60,bottom:-60,far:300});scene.add(sun);scene.add(sun.target);
+function sunAt(x,z){const d=tod==='sunset'?[-90,30,-40]:[-45,80,55];sun.position.set(x+d[0],d[1],z+d[2]);sun.target.position.set(x,0,z);sun.target.updateMatrixWorld()}
+// ground
+const gr=new THREE.Mesh(new THREE.PlaneGeometry(900,900),C.mats().grass);gr.material.map.repeat.set(120,120);gr.rotation.x=-Math.PI/2;gr.receiveShadow=true;scene.add(gr);
+const B=new C.Batch();let CAT='';const SKIP=(q.get('skip')||'').split(',');const add=(o,x,y,z,ry=0)=>{o.position.set(x,y,z);o.rotation.y=ry;if(!SKIP.includes(CAT))B.addObj(o);return o};
+// main street along X
+CAT='street';add(C.street(240,{cross:30}),0,0,0);CAT='cross';
+const cross=C.street(120,{});cross.rotation.y=Math.PI/2;cross.position.set(30,0.005,-40);if(!SKIP.includes('cross'))B.addObj(cross);
+CAT='shops';
+let x=-100;const shopsN=[];while(x<20){const s=C.shop({w:9+Math.floor(C.crnd()*4),d:9,lit:night});const w=s.userData.w;add(s,x+w/2,0,-(5.5+4.3+4.5));shopsN.push(s);x+=w+.4}
+x=36;while(x<120){const s=C.shop({w:9+Math.floor(C.crnd()*4),d:9,lit:night});const w=s.userData.w;add(s,x+w/2,0,-(5.5+4.3+4.5));x+=w+.4}
+CAT='houses';
+x=-100;while(x<22){const h=C.house({});const w=h.userData.w;add(h,x+w/2+1,0,(5.5+4.3+3.6+4),Math.PI);x+=w+3}
+CAT='park';
+add(C.park(),62,0,26);
+CAT='towers';
+for(let i=0;i<26;i++){const t=C.tower({h:30+C.crnd()*55,w:10+C.crnd()*8,lit:night});add(t,-160+i*13+C.crnd()*4,0,-150-C.crnd()*50)}
+// hills
+[[-120,-210,90],[20,-230,110],[150,-200,80]].forEach(([hx,hz,r])=>{const h=new THREE.Mesh(new THREE.IcosahedronGeometry(r,3),new THREE.MeshStandardMaterial({color:0x7cc35a,roughness:1}));h.position.set(hx,-r*.62,hz);h.scale.y=.6;scene.add(h)});
+CAT='props';
+const lamps=[];for(let lx=-96;lx<116;lx+=16){if(Math.abs(lx-30)<8)continue;const l=C.lamp(night);add(l,lx,.32,-7.2);lamps.push(l);const l2=C.lamp(night);add(l2,lx+8,.32,7.2,Math.PI);lamps.push(l2)}
+for(let tx=-92;tx<116;tx+=16){if(Math.abs(tx-30)<10)continue;add(C.tree(.9,'round'),tx+4,.32,8.4)}
+[[-40,-7.6],[12,7.6],[48,-7.6]].forEach(([hx,hz])=>add(C.hydrant(),hx,.32,hz));
+[[-60,8.6,Math.PI],[-20,-8.9,0],[50,8.6,Math.PI]].forEach(([bx,bz,r])=>add(C.bench(),bx,.32,bz,r));
+[[-55,-7.4],[-8,-7.4],[8,7.4],[70,-7.4]].forEach(([bx,bz])=>add(C.bin(),bx,.32,bz));
+add(C.trafficLight(),23.5,.32,-7.4);add(C.trafficLight(),36.5,.32,7.4,Math.PI);add(C.stopSign(),23.5,.32,7.6,Math.PI);add(C.busStop(),-30,.32,-8.2);
+const cars=[];[[-70,2.7,0],[-38,-2.7,Math.PI],[-12,2.7,0],[44,-2.7,Math.PI],[70,2.7,0],[30,0,0]].forEach(([cx,cz,r],i)=>{const c=C.car();if(i==5){c.rotation.y=Math.PI/2;c.position.set(30,0,-22);scene.add(c)}else{c.position.set(cx,0,cz);c.rotation.y=r+Math.PI/2;scene.add(c)}cars.push(c)});
+for(let i=0;i<8;i++){const cl=C.cloud(1.3+C.crnd());cl.position.set(-150+i*45,70+C.crnd()*30,-140-C.crnd()*80);scene.add(cl)}
+B.build(scene);if(q.get('nocars'))cars.forEach(c=>c.visible=false);if(q.get('nopeople'))setTimeout(()=>0);
+// night lights near the action
+if(night){lamps.forEach(l=>{l.userData.bulb.material.emissiveIntensity=3});C.mats().glass.emissiveIntensity=.35;C.mats().glassDark.emissiveIntensity=.15;
+  [-24,-8,8,24,-40].forEach(lx=>{const pl=new THREE.PointLight(0xffd59a,40,22,1.6);pl.position.set(lx-1.4,6.6,-7.2);scene.add(pl)})}
+// characters
+const people=[];const hero=r15(scene,NHACUDO);people.push(hero);
+for(let i=0;i<14;i++){const c=randomNPC(scene,100+i);people.push(c)}
+const walk=(t,s=6.5,ph=0)=>{const k=Math.sin(t*s+ph);return{lhx:k*.6,rhx:-k*.6,lkx:Math.max(0,-k)*.6,rkx:Math.max(0,k)*.6,lsx:-k*.5,rsx:k*.5,lex:-.25,rex:-.25,hy:Math.abs(Math.cos(t*s+ph))*.08}};
+const cam=new THREE.PerspectiveCamera(50,W/H,+(q.get('near')||.6),600);
+const T=+(q.get('t')||1);
+people.forEach(c=>c.root.visible=false);function place(c,x,z,ry,pose,face){c.root.visible=true;c.root.scale.setScalar(.6);c.root.position.set(x,.32,z);c.root.rotation.y=ry;c.pose(pose);if(face)c.face(face)}
+if(shot==='wide'||shot==='sunset'||shot==='night'){sunAt(0,-5);place(hero,2,-7.8,0,walk(T),'grin');
+  people.slice(1).forEach((c,i)=>{const side=i%2?1:-1;place(c,-24+i*3.4,side*(7.0+(i%3)*.6),side>0?Math.PI:0,walk(T,6,i),['grin','happy','talk','smug'][i%4]);c.root.rotation.y=i%3?Math.PI/2:-Math.PI/2});
+  cam.fov=50;cam.updateProjectionMatrix();cam.position.set(-12,17,26);cam.lookAt(6,1,-10)}
+else if(shot==='street'){sunAt(0,-8);place(hero,-3.2,-7.0,.25,walk(T),'grin');
+  people.slice(1,8).forEach((c,i)=>{place(c,(i<4?-16+i*2.6:4+i*1.6),-6.0-(i%2)*1.8,i%2?Math.PI/2:-Math.PI/2,walk(T,6,i*1.3),['happy','talk','grin','smug'][i%4])});
+  cam.fov=36;cam.updateProjectionMatrix();cam.position.set(.6,2.2,4.5);cam.lookAt(-3.6,2.5,-9)}
+else if(shot==='park'){sunAt(62,26);place(hero,60.5,38,.15,{rsz:2.5,rex:-.4},'grin');
+  people.slice(1,9).forEach((c,i)=>{const a=i/8*Math.PI*2;place(c,62+Math.cos(a)*8,26+Math.sin(a)*8,-a-Math.PI/2,walk(T,6,i),['happy','laugh','grin','talk'][i%4])});
+  cam.fov=46;cam.updateProjectionMatrix();cam.position.set(56,6.5,50);cam.lookAt(63,1.5,26)}
+const comp=new EffectComposer(renderer);comp.addPass(new RenderPass(scene,cam));const ao=new GTAOPass(scene,cam,W,H);ao.updateGtaoMaterial({radius:.8,scale:1.1,samples:12});if(q.get('v')==='1')ao.updatePdMaterial({radius:4,samples:12,rings:2});if(q.get('v')==='2')ao.output=GTAOPass.OUTPUT.Default;if(q.get('v')==='3'){ao.updateGtaoMaterial({radius:.8,scale:1.1,samples:16,distanceFallOff:1,thickness:1})}if(!q.get('gtao')){const ss=new SSAOPass(scene,cam,W,H);ss.kernelRadius=1.2;ss.minDistance=.0008;ss.maxDistance=.06;comp.addPass(ss)}else if(!q.get('noao'))comp.addPass(ao);
+if(q.get('dof'))comp.addPass(new BokehPass(scene,cam,{focus:+q.get('dof'),aperture:.002,maxblur:.006}));
+if(!q.get('nobloom'))comp.addPass(new UnrealBloomPass(new THREE.Vector2(W,H),night?.32:.15,.4,.9));comp.addPass(new OutputPass());
+window.renderAt=()=>{if(q.get('nopeople'))people.forEach(c=>c.root.visible=false);if(q.get('raw'))renderer.render(scene,cam);else comp.render()};window.probe=(u,v)=>{const rc=new THREE.Raycaster();rc.setFromCamera(new THREE.Vector2(u*2-1,-(v*2-1)),cam);const vis=o=>{while(o){if(!o.visible)return false;o=o.parent}return true};const hs=rc.intersectObjects(scene.children,true).filter(x=>vis(x.object));const h=hs[0];if(!h)return 'none';const m=h.object.material;return JSON.stringify({p:h.point.toArray().map(x=>+x.toFixed(2)),col:m.color&&m.color.getHexString(),map:!!m.map,em:m.emissive&&m.emissive.getHexString(),name:h.object.parent===B.root?'batch':h.object.type,geo:h.object.geometry.type,par:h.object.parent&&h.object.parent.type,cnt:h.object.geometry.attributes.position.count,transp:m.transparent,op:m.opacity})};window.ready=true;
+</script></body></html>
