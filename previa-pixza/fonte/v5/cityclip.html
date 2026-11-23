@@ -1,0 +1,106 @@
+<!doctype html><html><head><meta charset="utf-8"><style>@font-face{font-family:Cap;src:url(font.otf)}@font-face{font-family:CapB;src:url(fontb.otf)}
+html,body{margin:0;overflow:hidden;background:#000;width:720px;height:1280px}canvas{display:block}
+#cap{position:absolute;left:0;right:0;top:60%;text-align:center;font-family:CapB;font-size:56px;color:#fff;-webkit-text-stroke:8px #111;paint-order:stroke fill;transform-origin:50% 50%}
+#cap.big{font-size:150px;color:#36d4ff;-webkit-text-stroke:12px #062a4a;text-shadow:0 10px 0 #062a4a}
+#fade{position:absolute;inset:0;background:#000;opacity:0}</style></head><body><div id="cap"></div><div id="fade"></div><script src="clipwords.js"></script>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+await document.fonts.load('100px CapB');
+import * as THREE from 'three';
+import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+import {SSAOPass} from 'three/addons/postprocessing/SSAOPass.js';import {BokehPass} from 'three/addons/postprocessing/BokehPass.js';import {ShaderPass} from 'three/addons/postprocessing/ShaderPass.js';
+import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import * as C from './city.js';import {r15,randomNPC,NHACUDO} from './kit.js';
+const q=new URLSearchParams(location.search);const W=720,H=1280,PR=+(q.get('pr')||1.25);
+const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(PR);renderer.setSize(W,H);renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;document.body.prepend(renderer.domElement);
+const scene=new THREE.Scene();C.mats();C.cseed(7);
+scene.background=C.skyTex('#2f8fe8','#7cc8fa','#d8f0ff');scene.fog=new THREE.Fog(0xcfeaff,120,380);
+const pm=new THREE.PMREMGenerator(renderer);scene.environment=pm.fromScene(new RoomEnvironment(),.04).texture;
+const hemi=new THREE.HemisphereLight(0xe8f4ff,0x8cbf6a,.9);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xffe7c4,3.1);sun.castShadow=true;sun.shadow.mapSize.set(4096,4096);sun.shadow.bias=-.00025;sun.shadow.normalBias=.03;sun.shadow.radius=3;
+Object.assign(sun.shadow.camera,{left:-45,right:45,top:45,bottom:-45,far:260});scene.add(sun);scene.add(sun.target);sun.position.set(-40,55,38);sun.target.position.set(0,0,-6);
+const rim=new THREE.DirectionalLight(0xffc0e0,.9);rim.position.set(30,20,-40);scene.add(rim);
+// ---------- world ----------
+const gr=new THREE.Mesh(new THREE.PlaneGeometry(700,700),C.mats().grass);gr.material.map.repeat.set(90,90);gr.rotation.x=-Math.PI/2;gr.receiveShadow=true;scene.add(gr);
+const B=new C.Batch();const add=(o,x,y,z,ry=0)=>{o.position.set(x,y,z);o.rotation.y=ry;B.addObj(o);return o};
+add(C.street(200,{cross:34}),0,0,0);const cross=C.street(90,{});cross.rotation.y=Math.PI/2;cross.position.set(34,.005,-30);B.addObj(cross);
+let x=-90;const shopList=[['PADARIA',0xd98a3a],['CAFÉ',0x6b3f2a],['SORVETES',0xf27ba8],['PIZZARIA',0xd9473a],['MERCADO',0x2f8a5a],['LIVRARIA',0x5a3a8a],['FARMÁCIA',0x2f6fd0],['BARBEARIA',0x2d313c]];let si=0;
+while(x<28){const s=C.shop({w:9+Math.floor(C.crnd()*4),d:9,shop:shopList[(si++)%shopList.length]});const w=s.userData.w;add(s,x+w/2,0,-14.3);x+=w+.3}
+x=40;while(x<110){const s=C.shop({w:10,d:9,shop:shopList[(si++)%shopList.length]});add(s,x+5,0,-14.3);x+=10.3}
+x=-90;while(x<28){const h=C.house({});const w=h.userData.w;add(h,x+w/2+1,0,17.4,Math.PI);x+=w+2.4}
+for(let i=0;i<22;i++){const t=C.tower({h:28+C.crnd()*50,w:10+C.crnd()*8});add(t,-150+i*14+C.crnd()*4,0,-130-C.crnd()*40)}
+[[-110,-220,100],[40,-240,120]].forEach(([hx,hz,r])=>{const h=new THREE.Mesh(new THREE.IcosahedronGeometry(r,3),new THREE.MeshStandardMaterial({color:0x78c058,roughness:1}));h.position.set(hx,-r*.62,hz);h.scale.y=.55;scene.add(h)});
+// props
+const lampX=[];for(let lx=-80;lx<100;lx+=14){if(Math.abs(lx-34)<8)continue;add(C.lamp(),lx,.32,-7.3);add(C.lamp(),lx+7,.32,7.3,Math.PI);lampX.push(lx)}
+for(let i=0;i<lampX.length-1;i++){const a=new THREE.Vector3(lampX[i]-.2,6.9,-7.3),b=new THREE.Vector3(lampX[i]+6.8,6.9,7.3);scene.add(C.bunting(a,b,1.3))}
+for(let i=0;i<lampX.length-1;i++){scene.add(C.wire(new THREE.Vector3(lampX[i],6.2,-7.25),new THREE.Vector3(lampX[i+1],6.2,-7.25),.6))}
+for(let tx=-84;tx<100;tx+=14){if(Math.abs(tx-34)<10)continue;add(C.tree(.85,'round'),tx+3.5,.32,8.6)}
+[[4,-8.6],[8.5,-8.6],[13,-8.6],[-30,-8.6]].forEach(([cx,cz],i)=>add(C.cafeSet([0xd9473a,0x2f8a5a,0xf2c230,0x2f6fd0][i]),cx,.32,cz));
+[[-37,-9.3],[-21,-9.3],[-9.5,-9.3],[18,-9.3],[22,-9.3],[-48,-9.3]].forEach(([px,pz])=>add(C.pot(),px,.32,pz));
+[[-15,-9.2,.2],[-14,-9.2,.2],[26,9.2,0]].forEach(([bx,bz,r])=>add(C.bike(),bx,.32,bz,Math.PI/2+r));
+add(C.newsStand(),-26,.32,-8.6,0);add(C.hydrant(),-18,.32,6.2);add(C.hydrant(),20,.32,6.2);add(C.bench(),-42,.32,-9.1);add(C.bench(),10,.32,9.2,Math.PI);
+[[-58,-9.4],[-3,9.4],[24,9.4]].forEach(([bx,bz])=>add(C.bin(),bx,.32,bz));add(C.trafficLight(),27.5,.32,-6.8);add(C.trafficLight(),40.5,.32,6.8,Math.PI);add(C.busStop(),-52,.32,-8.4);
+[-40,-12,16].forEach(mx=>{const m=C.manhole();m.position.set(mx,0,2.2);scene.add(m)});
+B.build(scene);
+C.grassTufts(scene,[-90,10.2,30,26],2400,(x,z)=>Math.abs(z-17.4)<5.5);
+// cars (animated)
+const cars=[[-60,2.7,1,8],[-20,-2.7,-1,7],[25,2.7,1,9],[60,-2.7,-1,6]].map(([cx,cz,dir,sp])=>{const c=C.car();c.position.set(cx,0,cz);c.rotation.y=dir>0?Math.PI/2:-Math.PI/2;scene.add(c);return {c,x0:cx,dir,sp}});
+for(let i=0;i<7;i++){const cl=C.cloud(1.2+C.crnd());cl.position.set(-140+i*45,62+C.crnd()*25,-150-C.crnd()*60);scene.add(cl)}
+// env intensity
+scene.traverse(o=>{if(o.material&&o.material.isMeshStandardMaterial)o.material.envMapIntensity=.35});
+// ---------- people ----------
+const S=.6,Y=.32;
+const hero=r15(scene,NHACUDO);hero.root.scale.setScalar(S);
+const chasers=[];for(let i=0;i<14;i++){const c=randomNPC(scene,200+i);c.root.scale.setScalar(S);chasers.push({c,dx:-2.6-i*1.25-(i%3)*.4,z:-7.1+((i*37)%7)*.4,ph:i*.7,sp:6+(i%4)*.4})}
+const sitters=[0,1,2,3,4,5].map(i=>{const c=randomNPC(scene,300+i);c.root.scale.setScalar(S);const t=[4,8.5,13][Math.floor(i/2)];c.root.position.set(t+(i%2?.9:-.9)*S*1.3,Y,-8.6);c.root.rotation.y=i%2?-Math.PI/2:Math.PI/2;return c});
+const walkers=[0,1,2,3,4,5,6,7].map(i=>{const c=randomNPC(scene,400+i);c.root.scale.setScalar(S);return {c,x0:-30+i*9,z:i%2?7.4:6.4,dir:i%3?1:-1,ph:i}});
+const talkers=[[-6,6.4],[-5.2,6.4],[20,6.3],[20.9,6.3]].map(([tx,tz],i)=>{const c=randomNPC(scene,500+i);c.root.scale.setScalar(S);c.root.position.set(tx,Y,tz);c.root.rotation.y=i%2?-Math.PI/2:Math.PI/2;return c});
+// poses
+const run=(t,sp=9,ph=0)=>{const k=Math.sin(t*sp+ph),k2=Math.cos(t*sp+ph);return{lhx:k*.95,rhx:-k*.95,lkx:Math.max(0,-k)*1.3+.2,rkx:Math.max(0,k)*1.3+.2,lsx:-k*1.0,rsx:k*1.0,lex:-1.4,rex:-1.4,lsz:-.1,rsz:.1,hy:Math.abs(k2)*.18-.05,hx:.18,nx:-.12}};
+const walkP=(t,sp=6,ph=0)=>{const k=Math.sin(t*sp+ph);return{lhx:k*.55,rhx:-k*.55,lkx:Math.max(0,-k)*.6,rkx:Math.max(0,k)*.6,lsx:-k*.45,rsx:k*.45,lex:-.3,rex:-.3,hy:Math.abs(Math.cos(t*sp+ph))*.06}};
+const sitP=(t,ph)=>({lhx:-1.57,rhx:-1.57,lkx:1.5,rkx:1.5,hy:-.62,lsx:-.6,rsx:-.9+Math.sin(t*2+ph)*.25,rex:-1.2,lex:-.8,nx:Math.sin(t*1.3+ph)*.06,ny:Math.sin(t*.8+ph)*.2});
+const talkP=(t,ph)=>({rsx:-.7+Math.sin(t*4+ph)*.35,rex:-1.1,lsx:-.1,lsz:-.1,ny:Math.sin(t*1.1+ph)*.15,nx:Math.sin(t*3+ph)*.04,hy:0});
+// ---------- post ----------
+const cam=new THREE.PerspectiveCamera(44,W/H,.6,600);
+const comp=new EffectComposer(renderer);comp.setPixelRatio(PR);comp.setSize(W,H);comp.addPass(new RenderPass(scene,cam));
+const ss=new SSAOPass(scene,cam,W,H);ss.kernelRadius=.9;ss.minDistance=.0006;ss.maxDistance=.05;comp.addPass(ss);
+const bokeh=new BokehPass(scene,cam,{focus:8,aperture:.0025,maxblur:.008});comp.addPass(bokeh);
+comp.addPass(new UnrealBloomPass(new THREE.Vector2(W,H),.18,.5,.88));
+const grade=new ShaderPass({uniforms:{tDiffuse:{value:null},sat:{value:1.18},con:{value:1.07},vig:{value:.32},warm:{value:.03}},vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+  fragmentShader:`uniform sampler2D tDiffuse;uniform float sat,con,vig,warm;varying vec2 vUv;void main(){vec4 c=texture2D(tDiffuse,vUv);float l=dot(c.rgb,vec3(.299,.587,.114));c.rgb=mix(vec3(l),c.rgb,sat);c.rgb=(c.rgb-.5)*con+.5;
+  c.rgb+=vec3(warm,warm*.4,-warm);float d=distance(vUv,vec2(.5,.52));c.rgb*=1.-vig*smoothstep(.35,.85,d);gl_FragColor=c;}`});
+comp.addPass(new OutputPass());comp.addPass(grade);
+// ---------- animation ----------
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),ease=k=>{k=clamp(k);return k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2},lerp=(a,b,k)=>a+(b-a)*k;
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+const cap=document.getElementById('cap'),fade=document.getElementById('fade');
+window.renderAt=t=>{
+  // hero path
+  const stopT=3.3;const hx=t<stopT?-26+t*6.4:-26+stopT*6.4+Math.min(.6,(t-stopT)*2);const hz=-6.3;
+  hero.root.position.set(hx,Y,hz);
+  if(t<stopT){hero.root.rotation.y=Math.PI/2;hero.pose(run(t,10));hero.face(t<1.2?'grin':'laugh')}
+  else if(t<5.4){const k=ease((t-stopT)/.35);hero.root.rotation.y=lerp(Math.PI/2,Math.PI*.12,k);const nh=t>3.75;
+    hero.pose(nh?{lsz:-2.5+Math.sin(t*14)*.1,rsz:2.5-Math.sin(t*14)*.1,lex:-.2,rex:-.2,hy:Math.max(0,Math.sin((t-3.75)*7))*.6,nx:-.15}:{lsx:-.5,rsx:-.5,lex:-1,rex:-1,hy:-.1});hero.face(nh?'laugh':'shock')}
+  else {hero.root.rotation.y=Math.PI*.15;const j=Math.max(0,Math.sin((t-5.4)*6.5));hero.pose({rsz:2.6+Math.sin(t*12)*.25,rex:-.3,lsz:-.4,hy:j*.9,lhx:-j*.4,rhx:-j*.2,lkx:j*.6,rkx:j*.4});hero.face('grin')}
+  // chasers
+  chasers.forEach((o,i)=>{const stop=t>3.45+i*.04;const cx=stop?(-26+stopT*6.4+o.dx-.4+Math.min(1,(t-3.45)*2)):(hx+o.dx);o.c.root.position.set(cx,Y,o.z);o.c.root.rotation.y=Math.PI/2+(stop?Math.sin(i)*.4:0);
+    if(!stop){o.c.pose(run(t,o.sp+3,o.ph));o.c.face(['grin','angry','laugh','happy'][i%4])}else{o.c.pose({lsx:-.4,rsx:-.4,lex:-.8,rex:-.8,nx:-.15+Math.sin(t*20+i)*.02,hy:0});o.c.face(t>3.8&&t<5.4?'shock':'laugh');if(t>5.4)o.c.pose({rsz:2.2,rex:-.4,hy:Math.max(0,Math.sin((t-5.4)*6+i))*.4})}});
+  sitters.forEach((c,i)=>{c.pose(sitP(t,i));c.face(Math.floor(t*1.5+i)%3?'happy':'talk')});
+  walkers.forEach(o=>{const x=o.x0+o.dir*t*1.8;o.c.root.position.set(x,Y,o.z);o.c.root.rotation.y=o.dir>0?Math.PI/2:-Math.PI/2;o.c.pose(walkP(t,6,o.ph));o.c.face('happy')});
+  talkers.forEach((c,i)=>{c.pose(talkP(t,i*1.7));c.face(Math.floor(t*4+i)%2?'talk':'grin')});
+  cars.forEach(o=>{o.c.position.x=o.x0+o.dir*o.sp*t});
+  // camera
+  let cp,ct,f=44,foc;
+  if(t<stopT){cp=V(hx+8.6-t*.25,1.25+t*.08,-3.6);ct=V(hx-2.5,2.1,-6.8);f=40;foc=cp.distanceTo(V(hx,2.5,hz));}
+  else if(t<5.4){const k=ease((t-stopT)/2.1);cp=V(hx+lerp(3.0,2.6,k),2.95,hz+lerp(3.4,3.0,k));ct=V(hx-.3,2.85,hz);f=40;foc=cp.distanceTo(V(hx,2.8,hz));}
+  else {const k=ease((t-5.4)/2.8);cp=V(lerp(3.2,2.4,k),lerp(4.0,3.6,k),lerp(1.2,.4,k));ct=V(-4.6,2.3,-7.2);f=50;foc=cp.distanceTo(V(-4.3,2.3,-6.3));}
+  cp.x+=Math.sin(t*1.7)*.04;cp.y+=Math.sin(t*2.3)*.03;cam.position.copy(cp);cam.fov=f;cam.updateProjectionMatrix();cam.lookAt(ct);bokeh.uniforms.focus.value=foc;bokeh.uniforms.aperture.value=t<5.4?.0028:.0012;
+  // captions
+  let cur=null;for(const w of window.WORDS)if(w.t<=t)cur=w;cap.textContent=cur?cur.w:'';cap.className=cur&&cur.big?'big':'';
+  cap.style.transform=cur?`scale(${1+(cur.big?.55:.12)*Math.exp(-(t-cur.t)*(cur.big?9:18))}) rotate(${cur&&cur.big?-6:0}deg)`:'';
+  fade.style.opacity=t<.12?1-t/.12:(t>window.END-.3?clamp((t-(window.END-.3))/.3):0);
+  comp.render()};
+window.ready=true;
+</script></body></html>
