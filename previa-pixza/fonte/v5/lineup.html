@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="utf-8"><style>@font-face{font-family:Cap;src:url(font.otf)}@font-face{font-family:CapB;src:url(fontb.otf)}html,body{margin:0;overflow:hidden;background:#000}canvas{display:block}</style></head><body>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+await document.fonts.load('100px CapB');
+import * as THREE from 'three';
+import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+import {r15,randomNPC,NICO} from './kit.js';
+const q=new URLSearchParams(location.search);const W=+q.get('w')||1920,H=+q.get('h')||1080,mode=q.get('m')||'cast';
+const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setSize(W,H);renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;document.body.appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color(mode==='cast'?0xe9e4f7:0x6b3fd6);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:mode==='cast'?0xf2eefb:0x5a33bf,roughness:.9}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
+const wall=new THREE.Mesh(new THREE.PlaneGeometry(200,60),floor.material);wall.position.set(0,30,-6);wall.receiveShadow=true;scene.add(wall);
+scene.add(new THREE.HemisphereLight(0xffffff,0xb8a8e0,1.6));const key=new THREE.DirectionalLight(0xfff4e6,2.6);key.position.set(-8,14,14);key.castShadow=true;key.shadow.mapSize.set(4096,4096);
+Object.assign(key.shadow.camera,{left:-30,right:30,top:20,bottom:-5,far:80});key.shadow.radius=5;key.shadow.bias=-.0003;scene.add(key);const rim=new THREE.DirectionalLight(0xc8b8ff,1.2);rim.position.set(10,8,-8);scene.add(rim);
+const cam=new THREE.PerspectiveCamera(mode==='cast'?24:30,W/H,.1,300);
+const exprs=['grin','happy','smug','shock','laugh','nervous','talk','angry','cry','grin'];
+if(mode==='cast'){for(let i=0;i<10;i++){const c=randomNPC(scene,i+3);c.root.position.set(-15.75+i*3.5,0,(i%2)*.6);c.root.rotation.y=(Math.random()-.5)*.3;c.face(exprs[i]);
+    c.pose({lsz:-.08,rsz:.08,ny:(i%3-1)*.15})}
+  const n=r15(scene,NICO);n.root.position.set(0,0,3.2);n.face('grin');n.pose({rsz:2.5,rex:-.4,lsz:-.1});n.root.scale.setScalar(1.12);
+  cam.position.set(0,7,40);cam.lookAt(0,3.2,0)}
+else{const a=r15(scene,NICO);a.root.position.set(-2.2,0,0);a.face('grin');a.pose({rsz:2.6,rex:-.3});const b=r15(scene,NICO);b.root.position.set(2.4,0,0);b.root.rotation.y=-.75;b.face('happy');b.pose({lsx:-.3,rsx:.3});
+  cam.position.set(0,4.6,17);cam.lookAt(0,3.4,0)}
+const comp=new EffectComposer(renderer);comp.addPass(new RenderPass(scene,cam));const ao=new GTAOPass(scene,cam,W,H);ao.updateGtaoMaterial({radius:.5,scale:1});comp.addPass(ao);comp.addPass(new OutputPass());
+window.renderAt=()=>comp.render();window.ready=true;
+</script></body></html>
