@@ -1,0 +1,68 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Cap;src:url(font.otf)}@font-face{font-family:CapB;src:url(fontb.otf)}
+html,body{margin:0;background:#000;overflow:hidden;width:720px;height:1280px}canvas{display:block}
+#cap{position:absolute;left:0;right:0;top:66%;text-align:center;font-family:CapB;font-size:60px;color:#fff;-webkit-text-stroke:8px #111;paint-order:stroke fill}
+</style></head><body><div id="cap"></div><script src="words.js"></script>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+await document.fonts.load('100px CapB');
+import * as THREE from 'three';
+import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
+import {BokehPass} from 'three/addons/postprocessing/BokehPass.js';
+import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
+import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+import {r15,cbox,canvasTex,rnd,plastic} from './r15.js';
+const W=720,H=1280,PR=+(new URLSearchParams(location.search).get("pr")||1.5);
+const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(PR);renderer.setSize(W,H);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+document.body.prepend(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x0e1630);
+const camera=new THREE.PerspectiveCamera(36,W/H,.1,200);
+// ---- set: prison cell corner ----
+const brick=(base)=>canvasTex(512,512,(g,w,h)=>{g.fillStyle='#46557f';g.fillRect(0,0,w,h);for(let r=0;r<16;r++)for(let i=-1;i<5;i++){const v=(rnd()-.5)*26;const c=new THREE.Color(base).offsetHSL(0,0,v/255);
+  g.fillStyle='#'+c.getHexString();g.fillRect(i*128+(r%2)*64+4,r*32+4,120,25);for(let k=0;k<6;k++){g.fillStyle=`rgba(0,0,0,${rnd()*.15})`;g.fillRect(i*128+(r%2)*64+4+rnd()*110,r*32+6+rnd()*20,3,3)}}},[2,2]);
+const brickBump=canvasTex(512,512,(g,w,h)=>{g.fillStyle='#000';g.fillRect(0,0,w,h);g.fillStyle='#fff';for(let r=0;r<16;r++)for(let i=-1;i<5;i++)g.fillRect(i*128+(r%2)*64+5,r*32+5,118,23)},[2,2]);
+const wallMat=new THREE.MeshStandardMaterial({map:brick(0x6a7fbf),bumpMap:brickBump,bumpScale:3,roughness:.9});
+const back=new THREE.Mesh(new THREE.BoxGeometry(16,14,.5),wallMat);back.position.set(1,7,-3);back.receiveShadow=true;scene.add(back);
+const side=new THREE.Mesh(new THREE.BoxGeometry(.5,14,16),wallMat);side.position.set(-4.6,7,3);side.receiveShadow=true;scene.add(side);
+const floorMat=new THREE.MeshStandardMaterial({color:0x3d4a7a,roughness:.95,map:canvasTex(256,256,(g,w,h)=>{g.fillStyle='#5a6690';g.fillRect(0,0,w,h);for(let i=0;i<3000;i++){g.fillStyle=`rgba(0,0,0,${rnd()*.12})`;g.fillRect(rnd()*w,rnd()*h,2,2)}},[4,4])});
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(30,30),floorMat);floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
+const wood=new THREE.MeshStandardMaterial({roughness:.8,map:canvasTex(256,64,(g,w,h)=>{g.fillStyle='#6b6f86';g.fillRect(0,0,w,h);for(let i=0;i<40;i++){g.strokeStyle=`rgba(0,0,0,${.05+rnd()*.1})`;g.beginPath();g.moveTo(0,rnd()*h);g.lineTo(w,rnd()*h);g.stroke()}})});
+const bench=cbox(9,.5,2.0,wood,.06,1.18);bench.position.set(0,0,-1.75);scene.add(bench);[-3.8,3.8].forEach(x=>{const l=cbox(.5,1,1.8,plastic(0x2a2f44,.7),.05,.5);l.position.set(x,0,-1.75);scene.add(l)});
+// ---- characters ----
+const leo=r15(scene,{skin:0xf2f0ee,shirt:0xe8642a,vneck:1,patch:'0731',hair:'beanie',hairCol:0x2f4fb0,letter:'C',shoe:0x24304e,cuff:0xf2f2f2,seam:1});
+const inm=r15(scene,{skin:0xd9a37a,shirt:0xe8642a,vneck:1,patch:'2214',hair:'spiky',hairCol:0x1d2858,shoe:0x24304e});
+const sit={lhx:-1.57,rhx:-1.57,lkx:1.5,rkx:1.62,hy:-.6,lhz:.06,rhz:-.06};
+leo.root.position.set(.75,0,-1.05);leo.root.rotation.y=-.35;leo.pose({...sit,rsx:-1.25,rsy:.35,rex:-1.0,lsx:-.5,lex:-.9,lsz:.1,nx:.05,ny:-.25,wy:-.1});leo.face('nervous');
+inm.root.position.set(-1.35,0,-1.1);inm.root.rotation.y=.25;inm.pose({...sit,lsx:-.35,lex:-.6,rsx:-.45,rex:-.8,rsz:-.05,ny:.55,nz:.08,wx:.05});inm.face('smug');
+// flashlight in Leo's right hand
+const fl=new THREE.Group();fl.add(cbox(.34,.34,.9,plastic(0xd8d8d8,.3),.05,0));const lens=new THREE.Mesh(new THREE.CircleGeometry(.14,20),new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xfff2b0,emissiveIntensity:2.5}));lens.position.z=.46;fl.add(lens);
+const glow=new THREE.Mesh(new THREE.SphereGeometry(.15,16,12),new THREE.MeshBasicMaterial({color:0xfff6d0}));glow.position.z=.5;fl.add(glow);
+leo.rH.add(fl);fl.position.set(0,-.2,.3);fl.rotation.set(Math.PI/2+.9,0,0);
+const spot=new THREE.SpotLight(0xffd59a,6,12,.35,.7,1.6);spot.castShadow=true;spot.position.set(0,0,.5);fl.add(spot);const tgt=new THREE.Object3D();tgt.position.set(0,0,6);fl.add(tgt);spot.target=tgt;
+
+// lights
+scene.add(new THREE.HemisphereLight(0x8fa2e8,0x2a3058,1.5));
+const moon=new THREE.DirectionalLight(0xb8c6ff,1.8);moon.position.set(8,12,10);moon.castShadow=true;moon.shadow.mapSize.set(2048,2048);Object.assign(moon.shadow.camera,{left:-10,right:10,top:10,bottom:-10});moon.shadow.bias=-.0003;moon.shadow.radius=6;scene.add(moon);
+const rim=new THREE.DirectionalLight(0x7f9cff,1.2);rim.position.set(-6,8,-4);scene.add(rim);
+// camera like reference: 3/4 medium shot slightly above
+camera.position.set(3.4,5.4,11.6);camera.lookAt(-.6,2.7,-1.2);
+const comp=new EffectComposer(renderer);comp.setPixelRatio(PR);comp.setSize(W,H);comp.addPass(new RenderPass(scene,camera));
+const ao=new GTAOPass(scene,camera,W*PR,H*PR);ao.updateGtaoMaterial({radius:.6,distanceExponent:1.5,thickness:1,scale:1.2,samples:16});ao.blendIntensity=1;comp.addPass(ao);
+comp.addPass(new BokehPass(scene,camera,{focus:11.2,aperture:.0035,maxblur:.008}));
+comp.addPass(new UnrealBloomPass(new THREE.Vector2(W,H),.35,.35,.9));comp.addPass(new OutputPass());
+const cap=document.getElementById('cap');const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));const ease=k=>{k=clamp(k);return k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2};
+const C0=new THREE.Vector3(3.4,5.4,11.6),C1=new THREE.Vector3(2.4,4.9,9.6),LK=new THREE.Vector3(-.6,2.7,-1.2),LK1=new THREE.Vector3(-.3,3.4,-1.2);
+window.renderAt=t=>{const k=ease(t/window.END);camera.position.lerpVectors(C0,C1,k);camera.lookAt(new THREE.Vector3().lerpVectors(LK,LK1,k));
+  const talk=t>.3&&t<window.END-.9;const sh=talk?Math.sin(t*9)*.05:0;
+  leo.pose({...sit,rsx:-1.25+sh,rsy:.35,rex:-1.0+Math.sin(t*3)*.08,lsx:-.5,lex:-.9,lsz:.1,nx:.05+Math.sin(t*7)*.02*(talk?1:0),ny:-.25-ease((t-1)/0.5)*.2,wy:-.1});
+  leo.face(t<2.2?'nervous':'grin');
+  const turn=ease((t-1.6)/.5);inm.pose({...sit,lsx:-.6,lex:-.95,rsx:-.6,rex:-.95,ny:.55-turn*.15,nz:.08,wx:.05});inm.face(t<3.1?'smug':'shock');
+  if(t>3.1){inm.neck.rotation.x=-.12*Math.exp(-(t-3.1)*4)*Math.sin((t-3.1)*30)}
+  let cur=null;for(const w of window.WORDS)if(w.t<=t)cur=w;cap.textContent=cur?cur.w:'';cap.style.transform=cur?`scale(${1+.12*Math.exp(-(t-cur.t)*18)})`:'';
+  comp.render()};window.ready=true;
+</script></body></html>
