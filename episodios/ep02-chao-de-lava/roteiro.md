@@ -1,4 +1,4 @@
-# EP02: roteiro para aprovar (antes de gerar a narração)
+# EP02: roteiro APROVADO (sem "Parte 2" no final; a Parte 2 vem depois)
 
 ## Tema escolhido (recomendado)
 **"Nessa cidade, todo dia às 10 da noite, o chão vira lava."**
@@ -51,9 +51,7 @@ A lava não era de verdade.
 
 Alguém liga ela toda noite.
 
-Parte 2 em breve.
-
 ## Cenas planejadas (uma imagem por frase)
-Cidade à noite brilhando laranja (1º quadro) · sino na torre · relógio 60s na tela · casas e ônibus com escadas, cachorro com escadinha · torres dos ricos x carro x Nhacudo dormindo na geladeira · placa "40 ANOS SEM ACIDENTES" · tênis desamarrado em close · sino balançando + cronômetro · multidão correndo (andar Roblox) · padeiro no toldo · vovó subindo no poste · porta trancada · bueiros soltando fumaça, chão rachando com luz · banco da praça · contagem 3-2-1 com impacto · mar de lava (vista do drone) · menina descalça na lava · banco derretendo · pé entrando na lava (câmera lenta) · lava "fria" com cristais de gelo · prefeitura com máquina e cano · "PARTE 2".
+Cidade à noite brilhando laranja (1º quadro) · sino na torre · relógio 60s na tela · casas e ônibus com escadas, cachorro com escadinha · torres dos ricos x carro x Nhacudo dormindo na geladeira · placa "40 ANOS SEM ACIDENTES" · tênis desamarrado em close · sino balançando + cronômetro · multidão correndo (andar Roblox) · padeiro no toldo · vovó subindo no poste · porta trancada · bueiros soltando fumaça, chão rachando com luz · banco da praça · contagem 3-2-1 com impacto · mar de lava (vista do drone) · menina descalça na lava · banco derretendo · pé entrando na lava (câmera lenta) · lava "fria" com cristais de gelo · prefeitura com máquina e cano.
 
 Música: trilha B ("Fallen Down") ou trilha A de novo, você escolhe.
