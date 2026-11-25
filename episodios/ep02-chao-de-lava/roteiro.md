@@ -15,6 +15,8 @@ Nessa cidade, todo dia às dez da noite, o chão vira lava. De verdade.
 
 Quando o sino toca, você tem sessenta segundos pra sair do chão. Por isso aqui tudo tem escada. As casas, os ônibus… até o cachorro tem uma escadinha.
 
+Na escola, as carteiras ficam em cima de pernas de pau. O entregador de pizza chega de tirolesa.
+
 Os ricos dormem em torres altíssimas. Os pobres dormem em cima do carro. E eu? Eu durmo em cima da geladeira.
 
 Em quarenta anos, ninguém nunca caiu na lava. Até ontem.
@@ -24,6 +26,8 @@ Eu tava voltando da escola quando meu tênis desamarrou. Me abaixei pra amarrar�
 Sessenta segundos. A rua inteira correu. O seu Jorge da padaria pulou no toldo. A vovó subiu no poste mais rápido que um macaco.
 
 Trinta segundos. Corri pra casa, mas a porta tava trancada. Minha mãe já tinha subido.
+
+Vinte segundos. Tentei subir no ônibus, mas a escadinha já tinha sido recolhida. O motorista só gritou: "Corre, moleque!"
 
 Dez segundos. O chão começou a brilhar. Saía fumaça dos bueiros.
 
@@ -41,7 +45,7 @@ Antes que eu respondesse, o banco começou a derreter.
 
 Fechei os olhos… e pisei.
 
-Não queimou. A lava tava fria. Fria igual gelo.
+Não queimou. A lava tava fria. Fria igual gelo. Lá de cima, a cidade inteira me olhava pelas janelas, sem acreditar.
 
 A menina sorriu: "Agora você sabe o segredo da cidade."
 
