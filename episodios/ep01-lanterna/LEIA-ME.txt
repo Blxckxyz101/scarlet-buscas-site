@@ -1,4 +1,4 @@
-Link de download (gofile): https://gofile.io/d/AOUaFnkY
-Música: Numbers — TEMPOREX (trilha A). Próximo EP: Fallen Down — Toby Fox (trilha B).
-Voz: ElevenLabs "Mike - Animation Explainers, Gaming", acelerada 1,15x.
-Mocap: Quaternius Universal Animation Library (CC0).
+EP01 v2 — Nhacudo (1:53, 1080x1920 30fps)
+Download (MP4 final + versão celular): https://gofile.io/d/B5EtQCLv
+Aqui: EP01_nhacudo_v2_celular.mp4, legendas.srt, thumbnail.jpg, titulo-e-descricao.md
+Refazer: build/v2/ep1v2.html (three.js + kits Kenney CC0 em kits/), render com render_v2.js, áudio com mix.py (narração + Numbers Instrumental + SFX do kit Stickman).

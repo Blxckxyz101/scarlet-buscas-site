@@ -1,199 +1,299 @@
 1
-00:00:00,120 --> 00:00:00,870
-Nessa cidade,
+00:00:00,000 --> 00:00:02,200
+Nessa cidade, todo mundo nasce com um
 
 2
-00:00:00,960 --> 00:00:02,110
-todo mundo nasce com
+00:00:02,200 --> 00:00:02,990
+superpoder.
 
 3
-00:00:02,060 --> 00:00:02,830
-um superpoder.
+00:00:03,180 --> 00:00:03,950
+Menos eu.
 
 4
-00:00:03,160 --> 00:00:04,270
-Meu vizinho voa.
+00:00:04,120 --> 00:00:05,530
+Meu nome é Nhacudo.
 
 5
-00:00:04,440 --> 00:00:05,770
-Minha prima solta fogo
+00:00:05,820 --> 00:00:07,440
+Quando um bebê nasce aqui, o hospital
 
 6
-00:00:05,720 --> 00:00:06,430
-pelas mãos.
+00:00:07,440 --> 00:00:08,950
+acende uma luz no céu.
 
 7
-00:00:06,520 --> 00:00:07,750
-Até o cachorro fala.
+00:00:09,120 --> 00:00:10,610
+A cor mostra o poder.
 
 8
-00:00:08,020 --> 00:00:08,830
-Toda manhã ele me
+00:00:10,840 --> 00:00:11,480
+Vermelho.
 
 9
-00:00:08,780 --> 00:00:09,510
-olha e diz,
+00:00:11,480 --> 00:00:12,050
+Fogo.
 
 10
-00:00:09,680 --> 00:00:10,110
-Bom dia.
+00:00:12,180 --> 00:00:14,290
+Minha prima derrete panela com o dedo.
 
 11
-00:00:10,440 --> 00:00:10,790
-E eu?
+00:00:14,360 --> 00:00:14,990
+Azul.
 
 12
-00:00:11,040 --> 00:00:12,850
-Eu nasci com...
+00:00:15,200 --> 00:00:15,750
+Voo.
 
 13
-00:00:12,800 --> 00:00:13,610
-uma lanterna.
+00:00:15,800 --> 00:00:17,850
+Meu vizinho vai pra escola pelas nuvens.
 
 14
-00:00:13,860 --> 00:00:14,290
-Isso.
+00:00:18,180 --> 00:00:18,670
+Verde.
 
 15
-00:00:14,600 --> 00:00:15,370
-Uma lanterna.
+00:00:18,800 --> 00:00:19,930
+Falar com animais.
 
 16
-00:00:15,540 --> 00:00:15,970
-Na mão.
+00:00:20,080 --> 00:00:21,240
+O cachorro da minha rua me dá
 
 17
-00:00:16,260 --> 00:00:16,770
-Na escola,
+00:00:21,240 --> 00:00:22,530
+bom dia toda manhã.
 
 18
-00:00:16,940 --> 00:00:18,150
-me chamavam de poste.
+00:00:22,660 --> 00:00:24,590
+Quando eu nasci, a luz não acendeu.
 
 19
-00:00:18,320 --> 00:00:19,070
-Até o dia em
+00:00:24,740 --> 00:00:26,090
+O céu ficou apagado.
 
 20
-00:00:19,020 --> 00:00:19,890
-que um vilão roubou
+00:00:26,200 --> 00:00:27,760
+Os médicos me deram uma lanterna e
 
 21
-00:00:19,840 --> 00:00:20,790
-os poderes da cidade
+00:00:27,760 --> 00:00:29,680
+disseram Pelo menos você vai enxergar no
 
 22
-00:00:20,740 --> 00:00:21,410
-inteira.
+00:00:29,680 --> 00:00:30,250
+escuro.
 
 23
-00:00:21,680 --> 00:00:22,710
-E prendeu todo mundo
+00:00:30,340 --> 00:00:32,380
+Na escola, me chamavam de Poste.
 
 24
-00:00:22,660 --> 00:00:23,650
-numa prisão escura.
+00:00:32,380 --> 00:00:34,360
+No dia dos poderes, cada aluno mostrava
 
 25
-00:00:23,900 --> 00:00:24,670
-Inclusive eu.
+00:00:34,360 --> 00:00:35,350
+o seu no palco.
 
 26
-00:00:24,900 --> 00:00:25,550
-O cara da cela
+00:00:35,400 --> 00:00:36,530
+Eu liguei a lanterna.
 
 27
-00:00:25,500 --> 00:00:26,170
-do lado rio.
+00:00:36,640 --> 00:00:37,930
+Ninguém bateu palma.
 
 28
-00:00:26,400 --> 00:00:26,730
-E aí,
+00:00:38,000 --> 00:00:40,240
+Até que, numa noite, todas as luzes
 
 29
-00:00:26,800 --> 00:00:27,230
-Poste?
+00:00:40,240 --> 00:00:41,370
+do céu se apagaram.
 
 30
-00:00:27,320 --> 00:00:28,050
-Vai iluminar a gente
+00:00:41,400 --> 00:00:43,120
+Um homem de fumaça apareceu em cima
 
 31
-00:00:28,000 --> 00:00:28,670
-até a morte?
+00:00:43,120 --> 00:00:43,970
+da prefeitura.
 
 32
-00:00:28,620 --> 00:00:29,810
-Mas o vilão tinha
+00:00:44,060 --> 00:00:45,480
+Ele abriu a boca...
 
 33
-00:00:29,760 --> 00:00:30,750
-medo de uma coisa
+00:00:45,480 --> 00:00:47,700
+e começou a sugar os poderes da
 
 34
-00:00:30,700 --> 00:00:31,130
-só.
+00:00:47,700 --> 00:00:48,290
+cidade.
 
 35
-00:00:31,300 --> 00:00:31,830
-Luz.
+00:00:48,400 --> 00:00:49,650
+O fogo da minha prima.
 
 36
-00:00:32,040 --> 00:00:32,510
-NHAC!
+00:00:49,720 --> 00:00:51,080
+O voo do meu vizinho.
 
 37
-00:00:32,740 --> 00:00:33,810
-Acendi a lanterna na
+00:00:51,080 --> 00:00:52,710
+Até a voz do cachorro.
 
 38
-00:00:33,760 --> 00:00:34,350
-cara dele.
+00:00:52,800 --> 00:00:54,680
+Em uma hora, ninguém tinha mais poder
 
 39
-00:00:34,580 --> 00:00:35,610
-E ele derreteu igual
+00:00:54,680 --> 00:00:55,060
+nenhum.
 
 40
-00:00:35,560 --> 00:00:36,550
-sorvete no sol.
+00:00:55,060 --> 00:00:56,960
+E o homem de fumaça trancou todo
 
 41
-00:00:36,720 --> 00:00:37,810
-Os poderes voltaram pra
+00:00:56,960 --> 00:00:59,040
+mundo numa prisão embaixo da cidade.
 
 42
-00:00:37,760 --> 00:00:38,390
-todo mundo.
+00:00:59,040 --> 00:01:00,030
+Inclusive eu.
 
 43
-00:00:38,660 --> 00:00:39,250
-Menos um.
+00:01:00,100 --> 00:01:01,860
+Na cela, o cara do lado riu.
 
 44
-00:00:39,520 --> 00:00:39,870
-O meu.
+00:01:01,860 --> 00:01:02,820
+E aí, Poste?
 
 45
-00:00:40,180 --> 00:00:40,930
-Ele roubou a minha
+00:01:02,820 --> 00:01:04,410
+Vai iluminar a gente até a morte?
 
 46
-00:00:40,880 --> 00:00:42,250
-lanterna antes de derreter.
+00:01:04,620 --> 00:01:06,320
+Mas eu percebi uma coisa estranha.
 
 47
-00:00:42,520 --> 00:00:42,930
-E agora,
+00:01:06,320 --> 00:01:08,120
+Quando eu apontava a lanterna pra parede,
 
 48
-00:00:43,220 --> 00:00:44,010
-quem vai salvar a
+00:01:08,120 --> 00:01:09,260
+a fumaça fugia.
 
 49
-00:00:43,960 --> 00:00:45,010
-cidade da próxima vez?
+00:01:09,260 --> 00:01:10,640
+O vilão não tinha medo de poder
 
 50
-00:00:45,260 --> 00:00:45,810
-Comenta aí.
+00:01:10,640 --> 00:01:11,250
+nenhum.
+
+51
+00:01:11,340 --> 00:01:12,710
+Ele tinha medo de luz.
+
+52
+00:01:12,940 --> 00:01:15,110
+Naquela noite, ele veio até as grades.
+
+53
+00:01:15,180 --> 00:01:17,330
+Os olhos vermelhos brilhando no escuro.
+
+54
+00:01:17,400 --> 00:01:19,990
+Eu respirei fundo, apontei e liguei.
+
+55
+00:01:20,080 --> 00:01:20,610
+Luz!
+
+56
+00:01:20,720 --> 00:01:21,060
+NHAC!
+
+57
+00:01:21,060 --> 00:01:24,780
+Ele gritou e derreteu igual sorvete no
+
+58
+00:01:24,780 --> 00:01:25,290
+sol.
+
+59
+00:01:25,320 --> 00:01:27,520
+Os poderes voltaram voando pros donos.
+
+60
+00:01:27,520 --> 00:01:29,850
+Fogo, voo, a voz do cachorro.
+
+61
+00:01:29,880 --> 00:01:31,470
+A cidade inteira fez festa.
+
+62
+00:01:31,480 --> 00:01:32,870
+Me levantaram nos ombros.
+
+63
+00:01:33,040 --> 00:01:34,680
+Mas quando eu fui pegar minha lanterna,
+
+64
+00:01:34,680 --> 00:01:36,850
+ela não estava mais na minha mão.
+
+65
+00:01:36,900 --> 00:01:38,780
+Ela estava no meio da poça preta,
+
+66
+00:01:38,780 --> 00:01:39,510
+brilhando.
+
+67
+00:01:39,660 --> 00:01:40,210
+E aí?
+
+68
+00:01:40,260 --> 00:01:41,690
+A poça abriu os olhos.
+
+69
+00:01:41,940 --> 00:01:43,900
+No dia seguinte, o hospital acendeu uma
+
+70
+00:01:43,900 --> 00:01:44,780
+luz no céu.
+
+71
+00:01:44,780 --> 00:01:46,830
+Uma cor que ninguém nunca tinha visto.
+
+72
+00:01:46,960 --> 00:01:47,550
+Preta.
+
+73
+00:01:47,620 --> 00:01:49,600
+Alguém tinha acabado de nascer com o
+
+74
+00:01:49,600 --> 00:01:50,360
+poder do vilão.
+
+75
+00:01:50,360 --> 00:01:51,990
+Parte 2 em breve.
