@@ -144,7 +144,7 @@ const SH=[
   return {...pc(X,1.8,sz+11.9,{yaw:Math.PI+.35,dist:6.5,h:2.6,fov:58,lt}),subj:kid,face:true}}],
 ['umdoistres',W('Um.'),'SU',(k,t,lt)=>{env('day');aimSun(sx,0);showStreet();const X=sx+liarH.x;const n=t<W('Dois.')?'1':(t<W('Três.')?'2':'3');liarH.counter.userData.set(n);const kid=kids[0];put(kid,X,sz+11.9,Math.PI,'shock',t,'nervous',surfY([sub.g],X,sz+11.9));
   {const ws=['Um.','Dois.','Três.'];let cur=-1;ws.forEach((wd,i)=>{if(t>=W(wd))cur=i});if(cur>=0)sticker('DING!',360+(cur-1)*120,250,clamp((t-W(ws[cur]))/.12),'#ffd23f',84,(cur-1)*8)}
-  return {cp:V(X+1.2,4.4,sz+8.6),ct:V(X+.2,4.2,sz+13.3),f:50}}],
+  return {cp:V(X+1.4-k*.6,4.4,sz+lerp(7.9,9.7,ease(k))),ct:V(X+.2,4.2,sz+13.3),f:50,shake:t-W('Três.')>0&&t-W('Três.')<.3?.03:0}}],
 ['treno',W('véspera'),'SU',(k,t,lt)=>{env('night');aimSun(sx,0);showStreet();HOUSES.forEach(h=>{h.lights.userData.on(1,t);h.lights2.userData.on(1,t)});sleighAt(V(sx-50+lt*14,20,sz-4),Math.PI/2,t);sparkle(V(sx-54+lt*14,20,sz-4),t,30,1.6);
   sticker('00:00',360,200,clamp((t-W('meia-noite,'))/.15),'#ffd23f',96,0);neighbors(t,'wow');
   return {cp:V(sx-30,4.5,sz+6),ct:V(sx-40+lt*10,16,sz-6),f:62}}],
