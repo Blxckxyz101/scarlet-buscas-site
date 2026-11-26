@@ -10,14 +10,14 @@
 
 ## Visual (aprendido com os virais)
 - Boneco e **andar estilo Roblox clássico (R6)**: braços e pernas retos, balanço de pêndulo, sem joelho/cotovelo, sem pé deslizando, sempre de frente pra onde anda.
-- **Legenda de 1 palavra por vez**, amarelo-limão com contorno preto.
+- **Legenda de 1 palavra por vez**, branca com contorno, palavra forte em amarelo, "pulando" (50%→112%→100% em 0,17 s). Texto do gancho na tela até a 2ª frase.
 - **Uma imagem pra cada frase** da narração. Multidão grande nos clímax.
 - Luz de evento em toda cena (janelas acesas, holofotes, faíscas, chuva, sirene, brilho).
 - Primeiro quadro já mostra a regra da cidade.
 
 ## Checklist de detalhes antes do render final
-- [ ] **Rodar `ferramentas/qa/runqa.js` (passo 0,1 s) até dar 0 problemas.** Incluir TODO objeto que se move (cachorro, carro, etc.) no verificador.
-- [ ] Rodar `determ.js` (quadros idênticos entre processos). Proibido `Math.random` sem semente.
+- [ ] **Rodar `motor/qa/runqa.js` (passo 0,1 s) até dar 0 problemas.** Incluir TODO objeto que se move (cachorro, carro, etc.) no verificador.
+- [ ] Rodar `motor/ferramentas/determ3.js` (trocar o ep) (quadros idênticos entre processos). Proibido `Math.random` sem semente.
 - [ ] Revisão visual: 1 quadro por plano + conferir se nada tampa o personagem.
 - [ ] Áudio: -14 LUFS, pico ≤ -2 dB, música baixa.
 - [ ] Nenhum boneco atravessando objeto (bancos, cercas, postes, outros bonecos). Conferir de frente E de lado.

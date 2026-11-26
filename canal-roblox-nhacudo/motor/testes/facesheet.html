@@ -1,0 +1,14 @@
+<!doctype html><html><head><meta charset="utf-8"><style>@font-face{font-family:CapB;src:url(fontb.otf)}html,body{margin:0;background:#fff}canvas{display:block}</style></head><body>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+await document.fonts.load('60px CapB');
+import * as THREE from 'three';import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';import {r15,randomNPC,NHACUDO,canvasTex} from './kit.js';import * as F from './faces2.js';
+const W=1080,H=1620;const R=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});R.setSize(W,H);R.toneMapping=THREE.ACESFilmicToneMapping;document.body.appendChild(R.domElement);
+const S=new THREE.Scene();S.background=new THREE.Color(0x2a2f45);S.environment=new THREE.PMREMGenerator(R).fromScene(new RoomEnvironment(),.04).texture;S.add(new THREE.HemisphereLight(0xffffff,0x8888aa,1.2));const d=new THREE.DirectionalLight(0xffffff,2);d.position.set(3,5,10);S.add(d);
+const names=F.EXPRESSIONS.filter(n=>n!=='blink');const cols=4;
+names.forEach((n,i)=>{const c=i%3===0?r15(S,NHACUDO):randomNPC(S,300+i);c.root.scale.setScalar(.6);F.install(c,i);c.face(n);c.applyFace(0.5);
+  const r=Math.floor(i/cols);const x=(i%cols)*1.75-2.62,y=-r*1.95;c.root.position.set(x,y-2.72,r*2);
+  const lab=new THREE.Mesh(new THREE.PlaneGeometry(2.6,.45),new THREE.MeshBasicMaterial({transparent:true,map:canvasTex(512,90,(g,w,h)=>{g.fillStyle='#fff';g.font='64px CapB';g.textAlign='center';g.textBaseline='middle';g.fillText(n,w/2,h/2)})}));lab.scale.setScalar(.55);lab.position.set(x,y-.88,r*2+1.5);S.add(lab)});
+const rows=Math.ceil(names.length/cols);const cam=new THREE.OrthographicCamera(-6.6,6.6,1.4,1.4-13.2*H/W,.1,100);cam.position.set(0,0,20);cam.lookAt(0,0,0);
+cam.left=-3.6;cam.right=3.6;cam.top=1.0;cam.bottom=1.0-7.2*H/W;cam.updateProjectionMatrix();R.render(S,cam);window.ready=true;
+</script></body></html>

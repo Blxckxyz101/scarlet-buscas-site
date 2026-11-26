@@ -1,0 +1,6 @@
+{
+  "name": "motor-roblox-nhacudo",
+  "private": true,
+  "description": "Motor three.js dos shorts 'Nessa cidade...' do Nhacudo (estilo Roblox R6)",
+  "dependencies": { "three": "0.160.0", "three-mesh-bvh": "0.7.8" }
+}

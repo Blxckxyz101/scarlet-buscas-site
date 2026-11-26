@@ -1,0 +1,14 @@
+<!doctype html><html><head><meta charset="utf-8"><style>@font-face{font-family:CapB;src:url(fontb.otf)}html,body{margin:0;overflow:hidden;background:#000}canvas{display:block}</style></head><body>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+await document.fonts.load('100px CapB');
+import * as THREE from 'three';import {r15,NHACUDO,randomNPC} from './kit.js';import {loadMocap} from './retarget.js';
+const W=1920,H=640;const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setSize(W,H);renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.shadowMap.enabled=true;document.body.appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xe9e4f7);scene.add(new THREE.HemisphereLight(0xffffff,0xb8a8e0,1.6));const d=new THREE.DirectionalLight(0xffffff,2.2);d.position.set(-6,12,14);d.castShadow=true;scene.add(d);
+const fl=new THREE.Mesh(new THREE.PlaneGeometry(200,60),new THREE.MeshStandardMaterial({color:0xf2eefb}));fl.rotation.x=-Math.PI/2;fl.receiveShadow=true;scene.add(fl);
+const M=await loadMocap();window.INFO=M.info;
+const list=(new URLSearchParams(location.search).get('a')||'A_TPose,Idle_Loop,Walk_Loop,Jog_Fwd_Loop,Sprint_Loop,Dance_Loop,Jump_Start,Sitting_Idle_Loop,Punch_Cross,Interact').split(',');
+const T=+(new URLSearchParams(location.search).get('t')||.3);
+list.forEach((n,i)=>{const c=i==0?r15(scene,NHACUDO):r15(scene,NHACUDO);c.root.position.set(-15.75+i*3.5,0,0);M.apply(c,M.pose(n,T*M.dur(n)));c.face('grin')});
+const cam=new THREE.PerspectiveCamera(20,W/H,.1,300);cam.position.set(0,6,48);cam.lookAt(0,3,0);renderer.render(scene,cam);window.renderAt=()=>renderer.render(scene,cam);window.ready=true;
+</script></body></html>

@@ -1,3 +1,5 @@
+# MODELO de mixagem (EP03). Troque: caminho do shots.json (node ferramentas/shots.js URL > shots.json), END, lista de efeitos E (tempos das palavras), música e narr.wav.
+# Efeitos sonoros: /home/user/stickman/kit/sfx (repositório stickman) ou outros sem direitos.
 import subprocess,json
 SF='/home/user/stickman/kit/sfx/'
 shots=json.load(open('/tmp/claude-0/-home-user-scarlet-buscas-site/85e5b9be-4f69-5950-8bfe-773b19825042/scratchpad/e3/shots.json'))
