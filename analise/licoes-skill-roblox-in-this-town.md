@@ -29,3 +29,40 @@ Comparação de virais (0,2 a 5,6 mi de likes) com vídeos fracos do mesmo nicho
 A skill foi feita para o Claude controlar o **Roblox Studio** (MCP oficial do Roblox) e renderizar dentro do Roblox. Isso dá o visual 100% Roblox, com kits da Creator Store e animações oficiais do R6.
 - Precisa: um PC Windows ou Mac com Roblox Studio + o MCP do Studio conectado ao Claude (no próprio computador, via Claude Code / Remote Control).
 - Aqui na nuvem não roda. Se você tiver esse PC, dá pra migrar o pipeline.
+
+---
+# Lições do blocky-shorts (documento do Google + skill grátis, MIT)
+Motor parecido com o nosso (three.js), com regras medidas em 58 shorts de 13 canais.
+
+## Medição de cor (minha ferramenta `ferramentas/qa/cor.py`)
+| Vídeo | L médio | % quase preto | croma |
+|---|---|---|---|
+| Nosso EP02 | 38 | **29%** | 28 |
+| Nosso EP01 | 45 | 26% | 22 |
+| Virais (4 medidos) | 42-62 | **2-14%** | 15-31 |
+| Alvo da skill | 47-52 | 4-10% | 26-32 |
+**Nosso maior erro visual mensurável: escuro demais (preto esmagado).** EP03: levantar as sombras, sem fundo preto puro, menos vinheta. Meta ≤ 10% de preto.
+
+## O que adotar no nosso motor
+- **`alive()` em todo mundo:** respiração, balanço lento, cabeça à deriva, braços que nunca congelam. Ninguém fica parado.
+- **`pop()` em movimento grande (≥ 0,7 s):** antecipação de -14% e depois exagero, e acomoda.
+- **Andar:** pernas ±28-30°, ~2,3 passos/s, braço oposto balançando, corpo desce 2 cm a cada passo, sola levemente afundada na grama com uma sombra de contato.
+- **Luz premium por plano:** luz principal da frente-esquerda, preenchimento da frente-direita em cor complementar e **contorno forte por trás** (intensidade 4,5-5,5). Brilho só no que emite luz (limiar 0,7-0,8). Vinheta 0,2-0,5. Um clima por cena.
+- **Sombra falsa** em cantos e sob móveis + manchas de contato sob todo personagem e objeto.
+- **Borrão de movimento:** 4 sub-quadros por quadro (obturador de 126°; 72° em quedas).
+- **Câmera:** sempre um avanço lento de 8-11% da distância por segundo; menos de 6% de quadros parados; leve giro de 1-2°.
+- **Legendas que "pulam":** 50% → 112% → 100% em 0,17 s, brancas com contorno fino, margem de 12%, no máximo 2 linhas.
+- **Novas checagens no verificador:**
+  - **BLOCKED:** nada entre a câmera e o personagem.
+  - **FACING:** em plano de rosto, o rosto virado pra câmera.
+  - Personagem cortado na borda.
+  - Poste "saindo" da cabeça.
+  - Corpo em primeiro plano ocupando no máximo 30% da largura.
+  - Três quadros quase iguais seguidos dentro de um plano.
+- **Apontar ou acenar com o braço longe da câmera**, pro braço não tampar o rosto.
+- **Universo de regras:** "cada regra é sobre algo que todo mundo tem, tem efeito visível e põe um amigo em risco".
+
+## Duas escolas medidas (escolher uma por vídeo)
+- **Estilo Roblox Studio** (roblox-in-this-town): câmera de jogador, poucos closes (10-15%), muita gente no quadro, câmera viajando.
+- **Estilo blocky "soft render"** (blocky-shorts): corte a cada 1,25-1,5 s, ~50% closes de rosto, avanço constante.
+Nosso motor é mais próximo do 2º. Recomendo um meio-termo: corte a cada ~1,5 s, closes só nos momentos-chave, sempre com gente e cenário no quadro.
