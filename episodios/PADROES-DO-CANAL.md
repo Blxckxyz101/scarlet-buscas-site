@@ -28,3 +28,12 @@
 - [ ] Piso de interiores sem "piscar" grama (elevar o piso 0,04).
 - [ ] Legenda com nomes corrigidos (Nhacudo etc.).
 - [ ] Duração entre 1:45 e 2:00.
+
+## Lições do EP03 (Papai Noel)
+- Sol/luz que um plano não define herda do plano anterior → quadros diferentes entre processos. Regra: todo plano sem `aimSun` mira o sol no alvo da câmera (feito no `renderAt`).
+- `S.updateMatrixWorld(true)` antes de cada plano: medir caixas (`Box3`) com matriz velha deixava o sofá na origem no 1º quadro.
+- O verificador precisa de `cam.updateMatrixWorld()` antes de checar "cabeça cortada" (senão usa a câmera do plano anterior).
+- Calçada tem que ser maior que o caminho dos figurantes (rua 240 m), senão eles "flutuam" no fim da calçada.
+- Objetos na calçada (caixa de correio, placa) ficam fora das faixas de caminhada (faixas a ±6,3 e ±7,6).
+- Luz dourada perto do rosto + bloom = rosto lavado. No final: exposição 0,78 e bloom 0,2.
+- Plano de rosto: câmera a 4–5 m, nunca colada (cabeça cortada / fundo invisível fora da sala).
