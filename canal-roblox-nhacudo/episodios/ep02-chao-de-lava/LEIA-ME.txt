@@ -1,5 +1,0 @@
-EP02 — Chão de lava (1:48, 1080x1920 30fps)
-Download (MP4 final + versão celular, v2 sem bugs): https://gofile.io/d/4btvliN0
-Aqui: EP02_chao_de_lava_celular.mp4, legendas.srt, thumbnail.jpg, titulo-e-descricao.md, expressoes-roblox.jpg
-Novidades: andar estilo Roblox R6 (r6anim.js), rostos estilo Roblox com 25 expressões + piscar + reações (faces2.js), legenda 1 palavra, cidade noturna com janelas acesas e lava animada.
-Refazer: build/ep2.html (three.js + kits Kenney CC0), render com render_ep2.js, áudio com mix2.py.

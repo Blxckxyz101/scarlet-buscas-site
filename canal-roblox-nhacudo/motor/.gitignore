@@ -1,6 +1,0 @@
-node_modules/
-kits/*/
-font.otf
-fontb.otf
-*.jpg
-!../episodios/**
