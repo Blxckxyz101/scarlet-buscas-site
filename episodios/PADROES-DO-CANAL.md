@@ -16,6 +16,10 @@
 - Primeiro quadro já mostra a regra da cidade.
 
 ## Checklist de detalhes antes do render final
+- [ ] **Rodar `ferramentas/qa/runqa.js` (passo 0,1 s) até dar 0 problemas.** Incluir TODO objeto que se move (cachorro, carro, etc.) no verificador.
+- [ ] Rodar `determ.js` (quadros idênticos entre processos). Proibido `Math.random` sem semente.
+- [ ] Revisão visual: 1 quadro por plano + conferir se nada tampa o personagem.
+- [ ] Áudio: -14 LUFS, pico ≤ -2 dB, música baixa.
 - [ ] Nenhum boneco atravessando objeto (bancos, cercas, postes, outros bonecos). Conferir de frente E de lado.
 - [ ] Ninguém andando de costas ou de lado; velocidade do passo bate com o deslocamento.
 - [ ] Efeitos simétricos: linhas de vento/velocidade dos **dois lados** da tela.
