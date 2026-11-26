@@ -8,6 +8,13 @@
       "skillPath": "skills/disciplines/game-feel/SKILL.md",
       "computedHash": "f0a2becd199feabc7e8720f8f5626c84571ef763a0a5edefcdae8a039ce64338"
     },
+    "roblox-in-this-town": {
+      "source": "laSenu/roblox-in-this-town",
+      "commit": "b1352660e291d26fcbdec57e0034c7c5a4732382",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "58cea59f829af6513cea716aea506bf1d518519471dd45a50db7f1f15da5119e"
+    },
     "short-form-video": {
       "source": "iart-ai/tiktok-video-skills",
       "commit": "88e7152fc2710fa16852d013959cfd988a8adc8b",
