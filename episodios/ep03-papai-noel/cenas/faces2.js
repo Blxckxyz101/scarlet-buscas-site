@@ -17,7 +17,7 @@ const EX={
   evil:{eyes:'half',mouth:'evil',brows:'angry'},bored:{eyes:'lids',mouth:'flat'},wink:{eyes:'wink',mouth:'smile',blush:1},brace:{eyes:'xx',mouth:'grit',brows:'angry'},blink:{eyes:'closed',mouth:'smile'},
 };
 export const EXPRESSIONS=Object.keys(EX);
-export function faceTex(name,blink=false){const key=name+(blink?'_b':'');if(CACHE[key])return CACHE[key];const P=EX[name]||EX.smile;
+export function faceTex(name,blink=false,extra=''){const key=name+(blink?'_b':'')+extra;if(CACHE[key])return CACHE[key];const P=EX[name]||EX.smile;
   const c=document.createElement('canvas');c.width=c.height=512;const g=c.getContext('2d');g.fillStyle=g.strokeStyle=INK;g.lineCap=g.lineJoin='round';g.translate(256,268);g.scale(1.18,1.18);g.translate(-256,-268);
   const E=(x,y,rx,ry,col)=>{g.save();if(col)g.fillStyle=col;g.beginPath();g.ellipse(x,y,rx,ry,0,0,7);g.fill();g.restore()};
   const L=(w,pts)=>{g.lineWidth=w;g.beginPath();g.moveTo(...pts[0]);for(let i=1;i<pts.length;i++)g.lineTo(...pts[i]);g.stroke()};
@@ -68,11 +68,12 @@ export function faceTex(name,blink=false){const key=name+(blink?'_b':'');if(CACH
   if(P.blush){E(166,302,28,13,'rgba(255,90,120,.35)');E(346,302,28,13,'rgba(255,90,120,.35)')}
   if(P.sweat){g.save();g.fillStyle='#7fd0ff';g.strokeStyle=INK;g.lineWidth=5;g.beginPath();g.moveTo(388,140);g.quadraticCurveTo(366,186,388,196);g.quadraticCurveTo(410,186,388,140);g.fill();g.stroke();g.restore()}
   if(P.tears){g.save();g.fillStyle='rgba(110,190,255,.9)';[XL,XR].forEach(x=>{g.beginPath();g.roundRect(x-11,EY+10,22,120,11);g.fill()});g.restore()}
+  if(extra==='stache'){g.save();g.fillStyle='#f7f7f2';g.strokeStyle='#d8d4cc';g.lineWidth=4;[-1,1].forEach(s=>{g.beginPath();g.ellipse(256+s*44,MY-26,50,22,s*-.18,0,7);g.fill();g.stroke()});g.restore()}
   const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return CACHE[key]=t}
 // alias old names
 const ALIAS={grin:'grin',nervous_blink:'nervous',smug_talk:'talk2',ko:'sleep',blink:'blink'};
 // install on a character: c.face(name) + automatic blinking via c.tickFace(t)
 export function install(c,seed=0){c.expr2='smile';c.face=e=>{c.expr2=EX[e]?e:(ALIAS[e]||'smile')};
-  c.applyFace=t=>{const per=2.6+((seed*37)%10)/10,ph=(t+seed*.73)%per;const bl=c.expr2!=='blink'&&c.expr2!=='sleep'&&ph<.11;const m=faceTex(c.expr2,bl);if(c.fm.map!==m){c.fm.map=m;c.fm.needsUpdate=true}}}
+  c.applyFace=t=>{const per=2.6+((seed*37)%10)/10,ph=(t+seed*.73)%per;const bl=c.expr2!=='blink'&&c.expr2!=='sleep'&&ph<.11;const m=faceTex(c.expr2,bl,c.faceExtra||'');if(c.fm.map!==m){c.fm.map=m;c.fm.needsUpdate=true}}}
 // mouth flap for talking (syllable-ish, deterministic)
 export const talkMouth=(t,base='talk')=>{const s=Math.sin(t*23)+Math.sin(t*13.7);return s>.6?'talk2':(s>-.4?'talk':base==='talk'?'smile':base)};

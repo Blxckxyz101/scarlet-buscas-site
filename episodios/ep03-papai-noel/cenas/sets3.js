@@ -25,7 +25,7 @@ export function honestSign(){const g=new THREE.Group();cyl(g,.15,5.2,M(0x7a5a3a,
   const t=textPlane('CIDADE\n100% HONESTA',6.2,2.0,'#f4ead6','#1f6b3a',150,1024,330);t.position.z=.12;board.add(t);
   const hat=new THREE.Mesh(new THREE.ConeGeometry(.45,.9,12),M(0xd9332e,.5));hat.position.set(2.9,5.25,0);g.add(hat);g.userData.board=board;g.traverse(o=>{if(o.isMesh)o.castShadow=true});return g}
 // ---------- Santa, sleigh, reindeer ----------
-export function dressSanta(c,{beard=true}={}){const head=c.head;if(beard){const b=cbox(1.28,.4,.26,M(0xf7f7f2,.9),.1,.21);b.position.set(0,.15,.58);head.add(b);const m=cbox(.56,.1,.08,M(0xf7f7f2,.9),.04,.6);m.position.set(0,.585,.65);head.add(m)}
+export function dressSanta(c,{beard=true}={}){const head=c.head;if(beard){const bm=M(0xf7f7f2,.9);const b=cbox(1.3,.5,.3,bm,.12,.21);b.position.set(0,.08,.56);head.add(b);const b2=cbox(.9,.34,.24,bm,.1,.21);b2.position.set(0,-.22,.5);head.add(b2);c.faceExtra='stache'}
   const hat=new THREE.Group();hat.position.y=1.38;head.add(hat);const cone=new THREE.Mesh(new THREE.ConeGeometry(.62,1.25,16),M(0xd9332e,.6));cone.position.set(0,.55,-.05);cone.rotation.z=.25;hat.add(cone);
   const brim=new THREE.Mesh(new THREE.TorusGeometry(.66,.17,10,24),M(0xf7f7f2,.9));brim.rotation.x=Math.PI/2;hat.add(brim);const pom=new THREE.Mesh(new THREE.SphereGeometry(.2,12,8),M(0xf7f7f2,.9));pom.position.set(.3,1.1,-.05);hat.add(pom);
   const belt=cbox(2.06,.3,1.06,M(0x1a1a1a,.4),.05,.35);c.waist.add(belt);const buckle=cbox(.42,.32,.08,M(0xffd23f,.25,{metalness:.8}),.04,.34);buckle.position.z=.54;c.waist.add(buckle);c.root.traverse(o=>{if(o.isMesh)o.castShadow=true})}
